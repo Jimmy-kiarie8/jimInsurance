@@ -48,6 +48,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::resource('policy', 'PolicyController');
 	Route::resource('certificates', 'CertificateController');
 	Route::resource('companies', 'CompanyController');
+	Route::resource('clients', 'ClientController');
 
 	Route::get('getUsers', 'UserController@getUsers')->name('getUsers');
 	Route::get('getDrivers', 'UserController@getDrivers')->name('getDrivers');
@@ -100,5 +101,6 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('getLogo', 'CompanyController@getLogo')->name('getLogo');
 	Route::post('getLogoOnly', 'CompanyController@getLogoOnly')->name('getLogoOnly');
 	
+	Route::get('getClients', 'ClientController@getClients')->name('getClients');
 	
 });

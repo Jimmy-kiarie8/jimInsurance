@@ -4,29 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Client;
 use Illuminate\Http\Request;
+use Auth;
 
 class ClientController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -35,29 +16,18 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Client  $client
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Client $client)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Client  $client
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Client $client)
-    {
-        //
+        // return $request->all();
+        $client = new Client;
+        $client->name = $request->name;
+        $client->email = $request->email;
+        $client->phone = $request->phone;
+        $client->birth_day = $request->birth_day;
+        $client->client_no = 'client_'.$request->client_no;
+        $client->pin_no = $request->pin_no;
+        $client->branch_id = Auth::user()->branch_id;
+        $client->user_id = Auth::id();
+        $client->save();
+        return $client;
     }
 
     /**
@@ -69,7 +39,16 @@ class ClientController extends Controller
      */
     public function update(Request $request, Client $client)
     {
-        //
+        // return $request->all();
+        $client = Client::find($request->id);
+        $client->name = $request->name;
+        $client->email = $request->email;
+        $client->phone = $request->phone;
+        $client->birth_day = $request->birth_day;
+        $client->client_no = $request->client_no;
+        $client->pin_no = $request->pin_no;
+        $client->save();
+        return $client;
     }
 
     /**
@@ -81,5 +60,10 @@ class ClientController extends Controller
     public function destroy(Client $client)
     {
         //
+    }
+
+    public function getClients()
+    {
+        return Client::all();
     }
 }

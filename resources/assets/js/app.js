@@ -45,6 +45,7 @@ let myPolicy = require('./components/Policy/Policy.vue');
 let myCertificate = require('./components/certificate/Certificate.vue');
 let myReports = require('./components/reports/Reports.vue');
 let myCompany = require('./components/company/Company.vue');
+let myClient = require('./components/clients/Client.vue');
 
 const routes = [
     {path: '/', component: dashboard },
@@ -56,8 +57,8 @@ const routes = [
     {path: '/certificates', component: myCertificate },
     {path: '/reports', component: myReports },
     {path: '/company', component: myCompany },
+    {path: '/clients', component: myClient },
 ]
-
 
 
 const router = new VueRouter({
@@ -69,7 +70,7 @@ const app = new Vue({
     el: '#app',
     components: {
         myHeader, myUser, mysubsicriber, myProfile, dashboard, myBranch, myPolicy, myCertificate, printer,
-        myReports, myCompany
+        myReports, myCompany, myClient
     },
     router,
 });
