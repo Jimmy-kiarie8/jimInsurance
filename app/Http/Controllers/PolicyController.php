@@ -19,12 +19,16 @@ class PolicyController extends Controller
         $policy = new Policy;
         $policy->user_id = Auth::id();
         $policy->branch_id = Auth::user()->branch_id;
-        $policy->file_no = 'file_'.$request->file_no;
-        $policy->policy_no = 'policy_'.$request->policy_no;
-        $policy->effective_date = $request->effective_date;
-        $policy->exp_date = $request->exp_date;
-        $policy->premium = $request->premium;
-        $policy->commission = $request->commission;
+        $policy->file_no = 'file_'.$request->form['file_no'];
+        $policy->policy_no = 'policy_'.$request->form['policy_no'];
+        $policy->effective_date = $request->form['effective_date'];
+        $policy->exp_date = $request->form['exp_date'];
+        $policy->premium = $request->form['premium'];
+        $policy->commission = $request->form['commission'];
+        $policy->client = $request->form['client'];
+        $policy->InsType_id = $request->InsType['id'];
+        $policy->Insclass_id = $request->Insclass['id'];
+        $policy->policy_status_id = $request->policy['id'];
         $policy->save();
         return $policy;
     }
@@ -38,17 +42,16 @@ class PolicyController extends Controller
      */
     public function update(Request $request, Policy $policy)
     {
-        
-        // return $request->all();
+        return $request->all();
         $policy = Policy::find($request->id);
         $policy->user_id = Auth::id();
         $policy->branch_id = Auth::user()->branch_id;
-        $policy->file_no = $request->file_no;
-        $policy->policy_no = $request->policy_no;
-        $policy->effective_date = $request->effective_date;
-        $policy->exp_date = $request->exp_date;
-        $policy->premium = $request->premium;
-        $policy->commission = $request->commission;
+        $policy->file_no = $request->form['file_no'];
+        $policy->policy_no = $request->form['policy_no'];
+        $policy->effective_date = $request->form['effective_date'];
+        $policy->exp_date = $request->form['exp_date'];
+        $policy->premium = $request->form['premium'];
+        $policy->commission = $request->form['commission'];
         $policy->save();
         return $policy;
     }

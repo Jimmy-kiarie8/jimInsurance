@@ -22,7 +22,12 @@
                                         <!-- <small class="has-text-danger" v-if="errors.policy_no">{{ errors.policy_no[0] }}</small> -->
                                     </v-flex>
                                     <v-flex xs12 sm6>
-                                        <v-text-field v-model="form.premium" color="blue darken-2" label="premium" required>
+                                        <v-text-field v-model="form.client" color="blue darken-2" label="Client" required>
+                                        </v-text-field>
+                                        <!-- <small class="has-text-danger" v-if="errors.client">{{ errors.client[0] }}</small> -->
+                                    </v-flex>
+                                    <v-flex xs12 sm6>
+                                        <v-text-field v-model="form.premium" color="blue darken-2" label="Premium" required>
                                         </v-text-field>
                                         <!-- <small class="has-text-danger" v-if="errors.premium">{{ errors.premium[0] }}</small> -->
                                     </v-flex>
@@ -40,6 +45,15 @@
                                         <v-text-field v-model="form.exp_date " type="date" color="blue darken-2" label="Expiry Date" required>
                                         </v-text-field>
                                         <!-- <small class="has-text-danger" v-if="errors.commission">{{ errors.commission[0] }}</small> -->
+                                    </v-flex>
+                                    <v-flex xs12 sm6>
+                                    <v-select :items="InsClass" v-model="selectClass" :hint="`${selectClass.title}, ${selectClass.id}`" label="Insurance Class" single-line item-text="title" item-value="id" return-object persistent-hint></v-select>
+                                    </v-flex>
+                                    <v-flex xs12 sm6>
+                                    <v-select :items="InsType" v-model="selectType" :hint="`${selectType.title}, ${selectType.id}`" label="Insurance Type" single-line item-text="title" item-value="id" return-object persistent-hint></v-select>
+                                    </v-flex>
+                                    <v-flex xs12 sm6>
+                                    <v-select :items="PolicyStatus" v-model="selectPolicy" :hint="`${selectPolicy.title}, ${selectPolicy.id}`" label="Policy Status" single-line item-text="title" item-value="id" return-object persistent-hint></v-select>
                                     </v-flex>
                                 </v-layout>
                             </v-container>
@@ -69,9 +83,16 @@ export default {
             policy_no: '',
             effective_date: '',
             exp_date: '',
+            client: '',
         })
         return {
+            selectClass: [],
+            selectType: [],
+            selectPolicy: [],
             errors: {},
+            InsClass: [],
+            InsType: [],
+            PolicyStatus: [],
             defaultForm,
             loading: false,
             form: Object.assign({}, defaultForm),
@@ -83,7 +104,12 @@ export default {
     methods: {
         save() {
             this.loading = true
-            axios.post('/policy', this.$data.form).
+            axios.post('/policy', {
+                form: this.$data.form,
+                Insclass: this.$data.selectClass,
+                InsType: this.$data.selectType,
+                policy: this.$data.selectPolicy
+            }).
             then((response) => {
                     this.loading = false
                     console.log(response);
@@ -123,7 +149,20 @@ export default {
         },
     },
     mounted() {
+        axios.get('/getinsuranceType')
+            .then((response) => {
+                this.InsType = response.data
+            })
 
+        axios.get('/getinsuranceClass')
+            .then((response) => {
+                this.InsClass = response.data
+            })
+
+        axios.get('/getStatus')
+            .then((response) => {
+                this.PolicyStatus = response.data
+            })
     }
 }
 </script>

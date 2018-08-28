@@ -14,22 +14,22 @@
                                     <v-flex xs12 sm6>
                                         <v-text-field v-model="form.branch_name" :rules="rules.name" color="blue darken-2" label="Branch name" required>
                                         </v-text-field>
-                                        <small class="has-text-danger" v-if="errors.branch_name">{{ errors.branch_name[0] }}</small>
+                                        <!-- <small class="has-text-danger" v-if="errors.branch_name">{{ errors.branch_name[0] }}</small> -->
                                     </v-flex>
                                     <v-flex xs12 sm6>
                                         <v-text-field v-model="form.address" :rules="rules.name" color="blue darken-2" label="Branch Address" required>
                                         </v-text-field>
-                                        <small class="has-text-danger" v-if="errors.address">{{ errors.address[0] }}</small>
+                                        <!-- <small class="has-text-danger" v-if="errors.address">{{ errors.address[0] }}</small> -->
                                     </v-flex>
                                     <v-flex xs12 sm6>
                                         <v-text-field v-model="form.phone" :rules="rules.name" color="blue darken-2" label="Telephone Number" required>
                                         </v-text-field>
-                                        <small class="has-text-danger" v-if="errors.phone">{{ errors.phone[0] }}</small>
+                                        <!-- <small class="has-text-danger" v-if="errors.phone">{{ errors.phone[0] }}</small> -->
                                     </v-flex>
                                     <v-flex xs12 sm6>
                                         <v-text-field v-model="form.email" :rules="rules.name" color="blue darken-2" label="Branch Email" required>
                                         </v-text-field>
-                                        <small class="has-text-danger" v-if="errors.email">{{ errors.email[0] }}</small>
+                                        <!-- <small class="has-text-danger" v-if="errors.email">{{ errors.email[0] }}</small> -->
                                     </v-flex>
                                 </v-layout>
                             </v-container>

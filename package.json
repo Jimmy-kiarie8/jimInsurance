@@ -24,7 +24,12 @@
         "vue": "^2.5.7"
     },
     "dependencies": {
+        "vue-csv-import": "^1.6.0",
+        "vue-json-excel": "^0.2.83",
+        "vue-print-nb": "^1.0.3",
+        "vue-printer": "0.0.4",
         "vue-router": "^3.0.1",
-        "vuetify": "^1.1.13"
+        "vuetify": "^1.1.13",
+        "vuex": "^3.0.1"
     }
 }

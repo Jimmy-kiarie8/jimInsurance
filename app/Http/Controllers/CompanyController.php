@@ -4,29 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Company;
 use Illuminate\Http\Request;
+use Auth;
 
 class CompanyController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -35,29 +16,17 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Company  $company
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Company $company)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Company  $company
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Company $company)
-    {
-        //
+        // return $request->all();
+        $company = new Company;
+        $company->company_name = $request->company_name;
+        $company->user_id = Auth::id();
+        $company->email = $request->email;
+        $company->phone = $request->phone;
+        $company->logo = $request->logo;
+        $company->address = $request->address;
+        $company->website = $request->website;
+        $company->save();
+        return $company;
     }
 
     /**
@@ -67,9 +36,19 @@ class CompanyController extends Controller
      * @param  \App\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Company $company)
+    public function update(Request $request, $id)
     {
-        //
+        // return $request->all();
+        $company = Company::find($id);
+        $company->company_name = $request->company_name;
+        $company->user_id = Auth::id();
+        $company->email = $request->email;
+        $company->phone = $request->phone;
+        $company->logo = $request->logo;
+        $company->address = $request->address;
+        $company->website = $request->website;
+        $company->save();
+        return $company;
     }
 
     /**
@@ -82,4 +61,53 @@ class CompanyController extends Controller
     {
         //
     }
+    
+	public function getCompanies() {
+		return json_decode(json_encode(Company::all()), true);
+	}
+	public function getCompanyAdmin() {
+		$userRoles = User::with(['roles'])->get();
+		$user = [];
+		$IdArr = [];
+		foreach ($userRoles as $value) {
+			foreach ($value->roles as $element) {
+				$role_name = $element->name;
+				$role_id = $element->id;
+				if ($role_name == 'companyAdmin') {
+					$user[] = $value;
+				}
+			}
+		}
+		return $user;
+	}
+
+	public function logo(Request $request, Company $company)
+	{
+		// return $request->all();
+		$upload = Company::find($request->id);
+		if ($request->hasFile('image')) {
+			$imagename = time() . $request->image->getClientOriginalName();
+			$request->image->storeAs('public/logo', $imagename);
+			// return response();
+		}
+		$image_name = '/storage/logo/' . $imagename;
+		$upload->logo = $image_name;
+		$upload->save();
+	}
+
+	public function getLogo()
+	{
+		return Company::where('id', Auth::user()->branch_id)->get();
+	}
+
+
+
+	public function getLogoOnly()
+	{
+		$companies = Company::where('id', Auth::user()->branch_id)->get();
+		foreach ($companies as $company) {
+			$company_logo = $company->logo;
+		}
+		return $company_logo;
+	}
 }

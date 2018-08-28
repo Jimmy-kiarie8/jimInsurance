@@ -46,6 +46,8 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::resource('branches', 'BranchController');
 	Route::resource('email', 'EmailController');
 	Route::resource('policy', 'PolicyController');
+	Route::resource('certificates', 'CertificateController');
+	Route::resource('companies', 'CompanyController');
 
 	Route::get('getUsers', 'UserController@getUsers')->name('getUsers');
 	Route::get('getDrivers', 'UserController@getDrivers')->name('getDrivers');
@@ -74,5 +76,29 @@ Route::group(['middleware' => ['auth']], function () {
 	// Invoices
 	// Reports
 	// Route::get('/displayReport', 'ReportController@displayReport')->name('displayReport');
+
+	// Insurance Classes
+	Route::get('/getStatus', 'ClassesController@getStatus')->name('getStatus');
+	Route::get('/getinsuranceClass', 'ClassesController@getinsuranceClass')->name('getinsuranceClass');
+	Route::get('/getinsuranceType', 'ClassesController@getinsuranceType')->name('getinsuranceType');
+
+	// Certificates
+	Route::get('/getCertificates', 'CertificateController@getCertificates')->name('getCertificates');
+
+	Route::get('/certs', 'CertificateController@certs')->name('certs');
+	// Route::get('/customers/pdf','CustomerController@export_pdf');
+
+
+	// Reports
+	Route::post('/report', 'ReportController@report')->name('report');
+
+	
+	Route::post('getCompanies', 'CompanyController@getCompanies')->name('getCompanies');
+	Route::post('getCompanyAdmin', 'CompanyController@getCompanyAdmin')->name('getCompanyAdmin');
+	Route::post('companupdate/{id}', 'CompanyController@companupdate')->name('companupdate');
+	Route::post('logo/{id}', 'CompanyController@logo')->name('logo');
+	Route::post('getLogo', 'CompanyController@getLogo')->name('getLogo');
+	Route::post('getLogoOnly', 'CompanyController@getLogoOnly')->name('getLogoOnly');
+	
 	
 });

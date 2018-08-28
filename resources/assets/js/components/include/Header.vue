@@ -20,21 +20,6 @@
                     <v-list-group append-icon="" style="background:#f0f0f0">
 
                         <v-list-tile slot="activator" style="background:#f5f5f5; padding: 0 0 40px 0; margin-top: 10px; padding: 30px 0 0 0;">
-
-                            <!-- <v-list-tile-content> -->
-
-                            <!-- <v-avatar>
-  
-              <img :src="user.profile" style="width: 100px; height: 100px;border-radius: 50%; margin-left: 60px;">
-  
-              <br> 
-  
-              
-  
-              <v-divider></v-divider>
-  
-            </v-avatar>-->
-
                         </v-list-tile>
 
                     </v-list-group>
@@ -59,47 +44,15 @@
 
                         </router-link>
 
-                        <router-link to="/Shipments" class="v-list__tile v-list__tile--link">
+                        <router-link to="/certificates" class="v-list__tile v-list__tile--link">
 
-                            <div class="v-list__tile__action"><i aria-hidden="true" class="icon material-icons">local_shipping</i></div>
-
-                            <div class="v-list__tile__content">
-
-                                <div class="v-list__tile__title">
-
-                                    Manage Shipments
-
-                                </div>
-
-                            </div>
-
-                        </router-link>
-
-                        <!-- <router-link to="/companies" class="v-list__tile v-list__tile--link">
-
-                            <div class="v-list__tile__action"><i aria-hidden="true" class="icon material-icons">home</i></div>
+                            <div class="v-list__tile__action"><i aria-hidden="true" class="icon material-icons">book</i></div>
 
                             <div class="v-list__tile__content">
 
                                 <div class="v-list__tile__title">
 
-                                    Manage Companies
-
-                                </div>
-
-                            </div>
-
-                        </router-link> -->
-
-                        <router-link to="/containers" class="v-list__tile v-list__tile--link">
-
-                            <div class="v-list__tile__action"><i aria-hidden="true" class="icon material-icons">home</i></div>
-
-                            <div class="v-list__tile__content">
-
-                                <div class="v-list__tile__title">
-
-                                    Manage Containers
+                                    Manage Certificates
 
                                 </div>
 
@@ -139,22 +92,6 @@
 
                         </router-link>
 
-                        <!-- <router-link to="/customers" class="v-list__tile v-list__tile--link">
-
-                            <div class="v-list__tile__action"><i aria-hidden="true" class="icon material-icons">account_circle</i></div>
-
-                            <div class="v-list__tile__content">
-
-                                <div class="v-list__tile__title">
-
-                                    Manage Customers
-
-                                </div>
-
-                            </div>
-
-                        </router-link> -->
-
                         <router-link to="/profile" class="v-list__tile v-list__tile--link">
 
                             <div class="v-list__tile__action"><i aria-hidden="true" class="icon material-icons">account_circle</i></div>
@@ -187,6 +124,22 @@
 
                         </router-link>
 
+                        <router-link to="/company" class="v-list__tile v-list__tile--link">
+
+                            <div class="v-list__tile__action"><i aria-hidden="true" class="icon material-icons">home</i></div>
+
+                            <div class="v-list__tile__content">
+
+                                <div class="v-list__tile__title">
+
+                                    Manage Company
+
+                                </div>
+
+                            </div>
+
+                        </router-link>
+
                         <router-link to="/branches" class="v-list__tile v-list__tile--link">
 
                             <div class="v-list__tile__action"><i aria-hidden="true" class="icon material-icons">home</i></div>
@@ -203,49 +156,9 @@
 
                         </router-link>
 
-                        <v-expansion-panel popout>
-                            <v-expansion-panel-content>
-                                <div slot="header">Account Setting</div>
-                                <v-card>
+                        <router-link to="/reports" class="v-list__tile v-list__tile--link">
 
-                                    <router-link to="/invoices" class="v-list__tile v-list__tile--link">
-
-                                        <div class="v-list__tile__action"><i aria-hidden="true" class="icon material-icons">book</i></div>
-
-                                        <div class="v-list__tile__content">
-
-                                            <div class="v-list__tile__title">
-
-                                                Invoices
-
-                                            </div>
-
-                                        </div>
-
-                                    </router-link>
-
-                                    <router-link to="/receipts" class="v-list__tile v-list__tile--link">
-
-                                        <div class="v-list__tile__action"><i aria-hidden="true" class="icon material-icons">book</i></div>
-
-                                        <div class="v-list__tile__content">
-
-                                            <div class="v-list__tile__title">
-
-                                                Receipt
-
-                                            </div>
-
-                                        </div>
-
-                                    </router-link>
-                                </v-card>
-                            </v-expansion-panel-content>
-                        </v-expansion-panel>
-
-                        <a href="http://courier.dev/reports" class="v-list__tile v-list__tile--link">
-
-                            <div class="v-list__tile__action"><i aria-hidden="true" class="icon material-icons">info</i></div>
+                            <div class="v-list__tile__action"><i aria-hidden="true" class="icon material-icons">home</i></div>
 
                             <div class="v-list__tile__content">
 
@@ -257,17 +170,17 @@
 
                             </div>
 
-                        </a>
+                        </router-link>
 
                     </v-card>
                 </template>
             </v-list>
         </v-navigation-drawer>
         <v-toolbar dark app :color="color" :clipped-left="$vuetify.breakpoint.lgAndUp" fixed>
-            <v-toolbar-title style="width: 600px" class="ml-0 pl-3">
+            <v-toolbar-title style="width: 600px" class="ml-0 pl-3" v-for="comp in company" :key="comp.id">
                 <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-                {{ user.name }}
-                <img :src="user.profile" alt="" style="width: 60px; height: 60px; border-radius: 50%;">
+                {{ comp.company_name }}
+                <img :src="comp.logo" alt="" style="width: 60px; height: 60px; border-radius: 50%;">
             </v-toolbar-title>
             <v-spacer></v-spacer>
 

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Branch;
-use App\Http\Requests\BranchesRequest;
+// use App\Http\Requests\BranchesRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,8 +14,8 @@ class BranchController extends Controller {
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return \Illuminate\Http\Response
 	 */
-	public function store(BranchesRequest $request) {
-		return $request->all();
+	public function store(Request $request) {
+		// return $request->all();
 		$branch = new Branch;
 		$branch->branch_name = $request->branch_name;
 		$branch->phone = $request->phone;
@@ -60,7 +60,7 @@ class BranchController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function getBranch() {
-		return Branch::All();
+		return Branch::orderBy('id', 'desc')->get();
 	}
 	public function getBranchShip(Request $request, $id) {
 		return Branch::where('id', $id)->get();

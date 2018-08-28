@@ -59,10 +59,8 @@ class UserController extends Controller {
 		$user->name = $request->name;
 		$user->email = $request->email;
 		$user->phone = $request->phone;
-		$user->branch_id = $request->branch_id;
+		$user->branch_id = Auth::user()->branch_id;
 		$user->address = $request->address;
-		$user->city = $request->city;
-		$user->country = $request->country;
 		if ($user->save()) {
 			if (!$request->role_id) {
 				return $user;

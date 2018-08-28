@@ -26,6 +26,9 @@
                                 <v-btn icon class="mx-0" @click="editItem(props.item)">
                                     <v-icon color="blue darken-2" small>edit</v-icon>
                                 </v-btn>
+                                <v-btn icon class="mx-0" @click="printItem(props.item)">
+                                    <v-icon color="indigo darken-2" small>print</v-icon>
+                                </v-btn>
                                 <v-btn icon class="mx-0" @click="deleteItem(props.item)">
                                     <v-icon color="pink darken-2" small>delete</v-icon>
                                 </v-btn>
@@ -45,6 +48,7 @@
     </v-content>
     <AddPolicy :openAddRequest="OpenAdd" @closeRequest="close" @alertRequest="alert"></AddPolicy>
     <EditPolicy :openEditRequest="editModal" @closeRequest="close" @alertRequest="alert" :Editdata="editedItem"></EditPolicy>
+    <PrintCert :openPrintRequest="openPrint" @closeRequest="close" @alertRequest="alert" :printData="editedItem"></PrintCert>
     <v-snackbar :timeout="timeout" bottom='bottom' :color="color" left='left' v-model="snackbar">
         {{ message }}
         <v-icon dark right>check_circle</v-icon>
@@ -55,15 +59,17 @@
 <script>
 let AddPolicy = require('./AddPolicy')
 let EditPolicy = require('./EditPolicy')
+let PrintCert = require('./PrintCert')
 export default {
     props: ['user', 'role'],
     components: {
-        AddPolicy, EditPolicy
+        AddPolicy, EditPolicy, PrintCert
     },
     data() {
         return {
             errors: {},
             OpenAdd: false,
+            openPrint: false,
             search: '',
             snackbar: false,
             timeout: 5000,
@@ -76,7 +82,7 @@ export default {
                     value: 'file_no'
                 },
                 {
-                    text: 'Policy Number',
+                    text: 'Policy Number', 
                     value: 'policy_no'
                 },
                 {
@@ -104,12 +110,18 @@ export default {
             editModal: false,
             AllPolicies: [],
             editedItem: {},
+            editedItem: {},
         }
     },
 
     methods: {
         editItem(item) {
             this.editModal = true
+            this.editedIndex = this.AllPolicies.indexOf(item)
+            this.editedItem = Object.assign({}, item)
+        },
+        printItem(item) {
+            this.openPrint = true
             this.editedIndex = this.AllPolicies.indexOf(item)
             this.editedItem = Object.assign({}, item)
         },
@@ -128,7 +140,7 @@ export default {
             this.snackbar = true
         },
         close() {
-            this.OpenAdd = this.editModal = false
+            this.OpenAdd = this.editModal = this.openPrint = false
         },
 
         getPolicy(){

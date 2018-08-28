@@ -41,6 +41,15 @@
                                         </v-text-field>
                                         <!-- <small class="has-text-danger" v-if="errors.commission">{{ errors.commission[0] }}</small> -->
                                     </v-flex>
+                                    <v-flex xs12 sm6>
+                                    <v-select :items="InsClass" v-model="selectClass" :hint="`${selectClass.title}, ${selectClass.id}`" label="Insurance Class" single-line item-text="title" item-value="id" return-object persistent-hint></v-select>
+                                    </v-flex>
+                                    <v-flex xs12 sm6>
+                                    <v-select :items="InsType" v-model="selectType" :hint="`${selectType.title}, ${selectType.id}`" label="Insurance Type" single-line item-text="title" item-value="id" return-object persistent-hint></v-select>
+                                    </v-flex>
+                                    <v-flex xs12 sm6>
+                                    <v-select :items="PolicyStatus" v-model="selectPolicy" :hint="`${selectPolicy.title}, ${selectPolicy.id}`" label="Policy Status" single-line item-text="title" item-value="id" return-object persistent-hint></v-select>
+                                    </v-flex>
                                 </v-layout>
                             </v-container>
                             <v-card-actions>
@@ -62,6 +71,13 @@ export default {
     props: ['openEditRequest', 'Editdata'],
     data() {
         return {
+            selectClass: [],
+            selectType: [],
+            selectPolicy: [],
+            InsClass: [],
+            InsType: [],
+            PolicyStatus: [],
+            PolicyStatus: [],
             rules: {
                 name: [val => (val || '').length > 0 || 'This field is required']
             },
@@ -90,7 +106,20 @@ export default {
         },
     },
     mounted() {
+        axios.get('/getinsuranceType')
+            .then((response) => {
+                this.InsType = response.data
+            })
 
+        axios.get('/getinsuranceClass')
+            .then((response) => {
+                this.InsClass = response.data
+            })
+
+        axios.get('/getStatus')
+            .then((response) => {
+                this.PolicyStatus = response.data
+            })
     }
 }
 </script>

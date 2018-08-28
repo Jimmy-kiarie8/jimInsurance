@@ -61,8 +61,12 @@
                 <!-- <v-btn @click="openAdd" color="primary">Add A Branch</v-btn> -->
                 <div v-show="!loader">
                     <v-card-title>
-                        <v-btn color="primary" flat @click="openAdd">Add A Branch</v-btn>
                         Branchs
+                        <v-btn color="primary" flat @click="openAdd">Add A Branch</v-btn>
+                        
+                        <v-btn icon class="mx-0" @click="getBranch()">
+                            <v-icon color="blue darken-2">refresh</v-icon>
+                        </v-btn>
                         <v-spacer></v-spacer>
                         <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
                     </v-card-title>
@@ -222,10 +226,8 @@ export default {
             this.form = Object.assign({}, this.defaultForm)
             this.$refs.form.reset()
         },
-    },
-    mounted() {
-        this.loader = true
-        axios.get('getBranch')
+        getBranch() {
+            axios.get('getBranch')
             .then((response) => {
                 this.AllBranches = response.data
                 this.loader = false
@@ -234,6 +236,12 @@ export default {
                 this.errors = error.response.data.errors
                 this.loader = false
             })
+        }
+    },
+    mounted() {
+        this.loader = true
+        this.getBranch()
+        
     },
     computed: {
         // test() {

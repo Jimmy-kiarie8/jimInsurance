@@ -17,10 +17,10 @@ class CreateBranchesTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->string('branch_id');
-            $table->string('name');
+            $table->string('branch_name');
             $table->string('email');
+            $table->string('address');
             $table->string('phone');
-            $table->string('logo');
             $table->softDeletes();
             $table->timestamps();
         });

@@ -29,7 +29,7 @@ class LoginController extends Controller {
 	 *
 	 * @var string
 	 */
-	protected $redirectTo = '/courier';
+	protected $redirectTo = '/insurance';
 
 	/**
 	 * Create a new controller instance.
