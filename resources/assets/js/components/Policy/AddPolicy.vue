@@ -3,7 +3,7 @@
     <v-dialog v-model="openAddRequest" persistent max-width="700px">
         <v-card>
             <v-card-title fixed>
-                <span class="headline">Add Branch</span>
+                <span class="headline">Add Policy</span>
             </v-card-title>
             <v-card-text>
                 <v-container grid-list-md>
@@ -20,11 +20,6 @@
                                         <v-text-field v-model="form.policy_no" :rules="rules.name" color="blue darken-2" label="Policy Number" required>
                                         </v-text-field>
                                         <!-- <small class="has-text-danger" v-if="errors.policy_no">{{ errors.policy_no[0] }}</small> -->
-                                    </v-flex>
-                                    <v-flex xs12 sm6>
-                                        <v-text-field v-model="form.client" color="blue darken-2" label="Client" required>
-                                        </v-text-field>
-                                        <!-- <small class="has-text-danger" v-if="errors.client">{{ errors.client[0] }}</small> -->
                                     </v-flex>
                                     <v-flex xs12 sm6>
                                         <v-text-field v-model="form.premium" color="blue darken-2" label="Premium" required>
@@ -47,13 +42,29 @@
                                         <!-- <small class="has-text-danger" v-if="errors.commission">{{ errors.commission[0] }}</small> -->
                                     </v-flex>
                                     <v-flex xs12 sm6>
-                                    <v-select :items="InsClass" v-model="selectClass" :hint="`${selectClass.title}, ${selectClass.id}`" label="Insurance Class" single-line item-text="title" item-value="id" return-object persistent-hint></v-select>
+                                        <el-select v-model="form.InsClass_id" filterable clearable placeholder="Insurance Class">
+                                            <el-option v-for="item in InsClass" :key="item.id" :label="item.title" :value="item.id">
+                                            </el-option>
+                                        </el-select>
                                     </v-flex>
                                     <v-flex xs12 sm6>
-                                    <v-select :items="InsType" v-model="selectType" :hint="`${selectType.title}, ${selectType.id}`" label="Insurance Type" single-line item-text="title" item-value="id" return-object persistent-hint></v-select>
+
+                                        <el-select v-model="form.InsType_id" filterable clearable placeholder="Insurance Type">
+                                            <el-option v-for="item in InsType" :key="item.id" :label="item.title" :value="item.id">
+                                            </el-option>
+                                        </el-select>
                                     </v-flex>
                                     <v-flex xs12 sm6>
-                                    <v-select :items="PolicyStatus" v-model="selectPolicy" :hint="`${selectPolicy.title}, ${selectPolicy.id}`" label="Policy Status" single-line item-text="title" item-value="id" return-object persistent-hint></v-select>
+                                        <el-select v-model="form.policy_status_id" filterable clearable placeholder="Policy Status">
+                                            <el-option v-for="item in PolicyStatus" :key="item.id" :label="item.title" :value="item.id">
+                                            </el-option>
+                                        </el-select>
+                                    </v-flex>
+                                    <v-flex xs12 sm6>
+                                        <el-select v-model="form.client_id" filterable clearable placeholder="Client">
+                                            <el-option v-for="item in clients" :key="item.id" :label="item.name" :value="item.id">
+                                            </el-option>
+                                        </el-select>
                                     </v-flex>
                                 </v-layout>
                             </v-container>
@@ -74,7 +85,7 @@
 
 <script>
 export default {
-    props: ['openAddRequest'],
+    props: ['openAddRequest', 'clients'],
     data() {
         const defaultForm = Object.freeze({
             file_no: '',
@@ -104,20 +115,14 @@ export default {
     methods: {
         save() {
             this.loading = true
-            axios.post('/policy', {
-                form: this.$data.form,
-                Insclass: this.$data.selectClass,
-                InsType: this.$data.selectType,
-                policy: this.$data.selectPolicy
-            }).
+            axios.post('/policy', this.$data.form).
             then((response) => {
+                    // this.resetForm();
+                    this.$emit('alertRequest');
                     this.loading = false
                     console.log(response);
                     this.$parent.AllPolicies.push(response.data)
-                    this.close;
-                    this.resetForm();
-                    this.$emit('closeRequest');
-                    this.$emit('alertRequest');
+                    this.close();
 
                 })
                 .catch((error) => {

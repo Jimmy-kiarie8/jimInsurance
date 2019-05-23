@@ -8,6 +8,10 @@ use Auth;
 
 class ClientController extends Controller
 {
+    public function index()
+    {
+        return Client::all();
+    }
     /**
      * Store a newly created resource in storage.
      *

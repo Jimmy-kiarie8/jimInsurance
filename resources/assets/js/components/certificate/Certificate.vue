@@ -10,14 +10,18 @@
                 <div v-show="!loader">
                     <v-card-title>
                         Certificate Batch
-                        <v-btn icon class="mx-0" @click="getCertificates()">
-                            <v-icon color="blue darken-2">refresh</v-icon>
-                        </v-btn>
+                        <v-tooltip right>
+                            <v-btn icon slot="activator" class="mx-0" @click="getCertificates">
+                                <v-icon color="blue darken-2" small>refresh</v-icon>
+                            </v-btn>
+                            <span>Refresh</span>
+                        </v-tooltip>
                         <v-btn color="primary" flat @click="openAdd">Certificate Batch</v-btn>
                         <v-spacer></v-spacer>
                         <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
                     </v-card-title>
-                    <v-data-table :headers="headers" :items="AllCertificates" :search="search" counter class="elevation-1">
+                    <v-data-table :headers="headers" :loading="loading" :items="AllCertificates" :search="search" counter class="elevation-1">
+                        <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
                         <template slot="items" slot-scope="props">
                             <td>{{ props.item.underwriter }} </td>
                             <td class="text-xs-right">{{ props.item.serial_from }}</td>
@@ -69,6 +73,7 @@ export default {
         return {
             errors: {},
             openPrint: false,
+            loading: false,
             OpenAdd: false,
             search: '',
             snackbar: false,
@@ -138,14 +143,17 @@ export default {
             this.OpenAdd = this.editModal = false
         },
         getCertificates() {
+            this.loading=true
             axios.get('getCertificates')
             .then((response) => {
                 this.AllCertificates = response.data
+                this.loading = false
                 this.loader = false
             })
             .catch((error) => {
-                this.errors = error.response.data.errors
+                this.loading = false
                 this.loader = false
+                this.errors = error.response.data.errors
             })
         }
     },

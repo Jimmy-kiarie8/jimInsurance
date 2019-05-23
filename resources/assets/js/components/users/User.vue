@@ -37,7 +37,7 @@
 
                     <v-data-table :headers="headers" :items="Allusers" class="elevation-1" :loading="loading" :search="search">
 
-                        <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
+                        <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
 
                         <template slot="items" slot-scope="props">
 

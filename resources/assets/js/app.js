@@ -17,6 +17,8 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import '@fortawesome/fontawesome-free/css/all.css' // Ensure you are using css-loader
 import 'vuetify/dist/vuetify.min.css'
 
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 import printer from "vue-printer";
 import JsonExcel from 'vue-json-excel'
 // import test from "vue-test";
@@ -30,6 +32,7 @@ Vue.use(Vuetify)
 Vue.use(VueRouter)
 Vue.use(Print); 
 Vue.component('downloadExcel', JsonExcel)
+Vue.use(ElementUI);
 
 // Vue.component('example-component', require('./components/ExampleComponent.vue'));
 

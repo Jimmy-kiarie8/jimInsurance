@@ -50,7 +50,7 @@
 
 <script>
 export default {
-    props: ['openAddRequest', 'user'],
+    props: ['openAddRequest', 'user', 'clients'],
     data() {
         const defaultForm = Object.freeze({
             serial_from: 0,

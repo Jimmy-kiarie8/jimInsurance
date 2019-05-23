@@ -103,4 +103,20 @@ Route::group(['middleware' => ['auth']], function () {
 	
 	Route::get('getClients', 'ClientController@getClients')->name('getClients');
 	
+
+
+
+
+
+
+
+	Route::any('user_count', 'DashboardController@user_count')->name('user_count');
+    Route::any('client_count', 'DashboardController@client_count')->name('client_count');
+    Route::any('t_policies_count', 'DashboardController@t_policies_count')->name('t_policies_count');
+    Route::any('policies_count', 'DashboardController@policies_count')->name('policies_count');
+    Route::any('certificate_batch', 'DashboardController@certificate_batch')->name('certificate_batch');
+    Route::any('t_certificate_batch', 'DashboardController@t_certificate_batch')->name('t_certificate_batch');
+    Route::any('branches_count', 'DashboardController@branches_count')->name('branches_count');
+    Route::any('t_policy_count', 'DashboardController@t_policy_count')->name('t_policy_count');
+    Route::any('branches_count', 'DashboardController@branches_count')->name('branches_count');
 });

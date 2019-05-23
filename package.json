@@ -24,7 +24,11 @@
         "vue": "^2.5.7"
     },
     "dependencies": {
+        "element-ui": "^2.8.2",
         "vue-csv-import": "^1.6.0",
+        "chart.js": "^2.7.2",
+        "vue-chartjs": "^3.4.0",
+        "vue-chartkick": "^0.3.3",
         "vue-json-excel": "^0.2.83",
         "vue-print-nb": "^1.0.3",
         "vue-printer": "0.0.4",

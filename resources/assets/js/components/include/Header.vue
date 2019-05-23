@@ -126,7 +126,7 @@
 
                         <router-link to="/company" class="v-list__tile v-list__tile--link">
 
-                            <div class="v-list__tile__action"><i aria-hidden="true" class="icon material-icons">home</i></div>
+                            <div class="v-list__tile__action"><i aria-hidden="true" class="icon material-icons">business</i></div>
 
                             <div class="v-list__tile__content">
 
@@ -142,7 +142,7 @@
 
                         <router-link to="/branches" class="v-list__tile v-list__tile--link">
 
-                            <div class="v-list__tile__action"><i aria-hidden="true" class="icon material-icons">home</i></div>
+                            <div class="v-list__tile__action"><i aria-hidden="true" class="icon material-icons">call_split</i></div>
 
                             <div class="v-list__tile__content">
 
@@ -158,7 +158,7 @@
 
                         <router-link to="/reports" class="v-list__tile v-list__tile--link">
 
-                            <div class="v-list__tile__action"><i aria-hidden="true" class="icon material-icons">home</i></div>
+                            <div class="v-list__tile__action"><i aria-hidden="true" class="icon material-icons">book</i></div>
 
                             <div class="v-list__tile__content">
 
@@ -182,10 +182,10 @@
                 {{ comp.company_name }}
                 <img :src="comp.logo" alt="" style="width: 60px; height: 60px; border-radius: 50%;">
             </v-toolbar-title>
-            <v-spacer></v-spacer>
+                <v-spacer></v-spacer>
 
-            <v-icon @click.stop="right = !right" style="cursor: pointer">apps</v-icon>
-            <!-- <v-toolbar-side-icon></v-toolbar-side-icon> -->
+                <v-icon @click.stop="right = !right" style="cursor: pointer">apps</v-icon>
+                <!-- <v-toolbar-side-icon></v-toolbar-side-icon> -->
         </v-toolbar>
     </v-app>
 </div>

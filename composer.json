@@ -1,7 +1,10 @@
 {
     "name": "laravel/laravel",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
     "license": "MIT",
     "type": "project",
     "require": {
@@ -10,6 +13,7 @@
         "barryvdh/laravel-dompdf": "^0.8.2",
         "maatwebsite/excel": "~2.1.0",
         "jimmyjs/laravel-report-generator": "^1.0",
+        "spatie/laravel-permission": "^2.19",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0"
@@ -37,8 +41,7 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": [
-            ]
+            "dont-discover": []
         }
     },
     "scripts": {

@@ -4,18 +4,24 @@
         <div v-show="loader" style="text-align: center; width: 100%;">
             <v-progress-circular :width="3" indeterminate color="red" style="margin: 1rem"></v-progress-circular>
         </div>
-<!-- <router-link :to="test">test</router-link> -->
+        <!-- <router-link :to="test">test</router-link> -->
         <v-container fluid fill-height v-show="!loader">
             <v-layout justify-center align-center>
                 <!-- <v-btn @click="openAdd" color="primary">Add A Branch</v-btn> -->
                 <div v-show="!loader">
                     <v-card-title>
                         <v-btn color="primary" flat @click="openAdd">Add A Policy</v-btn>
-                        Policy
+                        <v-tooltip right>
+                            <v-btn icon slot="activator" class="mx-0" @click="getPolicy">
+                                <v-icon color="blue darken-2" small>refresh</v-icon>
+                            </v-btn>
+                            <span>Refresh</span>
+                        </v-tooltip>
                         <v-spacer></v-spacer>
                         <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
                     </v-card-title>
-                    <v-data-table :headers="headers" :items="AllPolicies" :search="search" counter class="elevation-1">
+                    <v-data-table :loading="loading" :headers="headers" :items="AllPolicies" :search="search" counter class="elevation-1">
+                        <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
                         <template slot="items" slot-scope="props">
                             <td>{{ props.item.file_no }} </td>
                             <td class="text-xs-right">{{ props.item.policy_no }}</td>
@@ -46,8 +52,8 @@
             </v-layout>
         </v-container>
     </v-content>
-    <AddPolicy :openAddRequest="OpenAdd" @closeRequest="close" @alertRequest="alert"></AddPolicy>
-    <EditPolicy :openEditRequest="editModal" @closeRequest="close" @alertRequest="alert" :Editdata="editedItem"></EditPolicy>
+    <AddPolicy :openAddRequest="OpenAdd" @closeRequest="close" @alertRequest="alert" :clients="allClients"></AddPolicy>
+    <EditPolicy :openEditRequest="editModal" @closeRequest="close" @alertRequest="alert" :Editdata="editedItem" :clients="allClients"></EditPolicy>
     <PrintCert :openPrintRequest="openPrint" @closeRequest="close" @alertRequest="alert" :printData="editedItem"></PrintCert>
     <v-snackbar :timeout="timeout" bottom='bottom' :color="color" left='left' v-model="snackbar">
         {{ message }}
@@ -61,13 +67,16 @@ let AddPolicy = require('./AddPolicy')
 let EditPolicy = require('./EditPolicy')
 let PrintCert = require('./PrintCert')
 export default {
-    props: ['user', 'role'],
+    props: ['user'],
     components: {
-        AddPolicy, EditPolicy, PrintCert
+        AddPolicy,
+        EditPolicy,
+        PrintCert
     },
     data() {
         return {
             errors: {},
+            loading: false,
             OpenAdd: false,
             openPrint: false,
             search: '',
@@ -82,7 +91,7 @@ export default {
                     value: 'file_no'
                 },
                 {
-                    text: 'Policy Number', 
+                    text: 'Policy Number',
                     value: 'policy_no'
                 },
                 {
@@ -108,6 +117,7 @@ export default {
             loader: false,
             Editloader: false,
             editModal: false,
+            allClients: [],
             AllPolicies: [],
             editedItem: {},
             editedItem: {},
@@ -143,22 +153,36 @@ export default {
             this.OpenAdd = this.editModal = this.openPrint = false
         },
 
-        getPolicy(){
-            this.loader = true
+        getPolicy() {
+            this.loading = true
             axios.get('getPolicy')
-            .then((response) => {
-                this.AllPolicies = response.data
-                this.loader = false
-            })
-            .catch((error) => {
-                this.errors = error.response.data.errors
-                this.loader = false
-            })
+                .then((response) => {
+                    this.AllPolicies = response.data
+                    this.loading = false
+                    this.loader = false
+                })
+                .catch((error) => {
+                    this.loading = false
+                    this.loader = false
+                    this.errors = error.response.data.errors
+                })
+        },
+
+        getClient() {
+            axios.get('clients')
+                .then((response) => {
+                    this.allClients = response.data
+                })
+                .catch((error) => {
+                    this.errors = error.response.data.errors
+                })
         }
     },
     mounted() {
+        this.loader = true
+        this.getClient()
         this.getPolicy()
-        
+
     },
 }
 </script>

@@ -3,7 +3,7 @@
     <v-dialog v-model="openEditRequest" persistent max-width="700px">
         <v-card>
             <v-card-title fixed>
-                <span class="headline">Add Branch</span>
+                <span class="headline">Edit policy</span>
             </v-card-title>
             <v-card-text>
                 <v-container grid-list-md>
@@ -42,13 +42,30 @@
                                         <!-- <small class="has-text-danger" v-if="errors.commission">{{ errors.commission[0] }}</small> -->
                                     </v-flex>
                                     <v-flex xs12 sm6>
-                                    <v-select :items="InsClass" v-model="selectClass" :hint="`${selectClass.title}, ${selectClass.id}`" label="Insurance Class" single-line item-text="title" item-value="id" return-object persistent-hint></v-select>
+                                        <el-select v-model="Editdata.InsClass_id" filterable clearable placeholder="Insurance Class">
+                                            <el-option v-for="item in InsClass" :key="item.id" :label="item.title" :value="item.id">
+                                            </el-option>
+                                        </el-select>
                                     </v-flex>
                                     <v-flex xs12 sm6>
-                                    <v-select :items="InsType" v-model="selectType" :hint="`${selectType.title}, ${selectType.id}`" label="Insurance Type" single-line item-text="title" item-value="id" return-object persistent-hint></v-select>
+
+                                        <el-select v-model="Editdata.InsType_id" filterable clearable placeholder="Insurance Type">
+                                            <el-option v-for="item in InsType" :key="item.id" :label="item.title" :value="item.id">
+                                            </el-option>
+                                        </el-select>
                                     </v-flex>
                                     <v-flex xs12 sm6>
-                                    <v-select :items="PolicyStatus" v-model="selectPolicy" :hint="`${selectPolicy.title}, ${selectPolicy.id}`" label="Policy Status" single-line item-text="title" item-value="id" return-object persistent-hint></v-select>
+
+                                        <el-select v-model="Editdata.policy_status_id" filterable clearable placeholder="Policy Status">
+                                            <el-option v-for="item in PolicyStatus" :key="item.id" :label="item.title" :value="item.id">
+                                            </el-option>
+                                        </el-select>
+                                    </v-flex>
+                                    <v-flex xs12 sm6>
+                                        <el-select v-model="Editdata.client_id" filterable clearable placeholder="Client">
+                                            <el-option v-for="item in clients" :key="item.id" :label="item.name" :value="item.id">
+                                            </el-option>
+                                        </el-select>
                                     </v-flex>
                                 </v-layout>
                             </v-container>
@@ -68,7 +85,7 @@
 
 <script>
 export default {
-    props: ['openEditRequest', 'Editdata'],
+    props: ['openEditRequest', 'Editdata', 'clients'],
     data() {
         return {
             selectClass: [],
