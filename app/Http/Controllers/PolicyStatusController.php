@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\PolicyStatus;
 use Illuminate\Http\Request;
+use Auth;
 
 class PolicyStatusController extends Controller
 {
@@ -26,7 +27,8 @@ class PolicyStatusController extends Controller
     public function store(Request $request)
     {
         $policy = new PolicyStatus;
-        $policy->title = $request->title;
+        $policy->user_id = Auth::id();
+        $policy->code = $request->code;
         $policy->description = $request->description;
         $policy->save();
         return $policy;
@@ -53,7 +55,7 @@ class PolicyStatusController extends Controller
     public function update(Request $request, $id)
     {
         $policy = PolicyStatus::find($id);
-        $policy->title = $request->title;
+        $policy->code = $request->code;
         $policy->description = $request->description;
         $policy->save();
         return $policy;

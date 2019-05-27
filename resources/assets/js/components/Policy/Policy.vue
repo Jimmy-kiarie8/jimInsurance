@@ -207,7 +207,7 @@ export default {
         getFileno() {
         axios.get('/file_no')
             .then((response) => {
-                this.file_no = 'file_' + response.data
+                this.file_no = 'PF_' + response.data
             })
         }
     },

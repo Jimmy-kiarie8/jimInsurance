@@ -90,7 +90,7 @@ export default {
                     value: "phone"
                 },
                 {
-                    text: "BirthDay",
+                    text: "D.O.B",
                     value: "birth_day"
                 },
                 {
@@ -198,7 +198,7 @@ export default {
         getClientno() {
             axios.get('/client_no')
                 .then((response) => {
-                    this.client_no = 'client_' + response.data
+                    this.client_no = 'CL_' + response.data
                 })
         }
     },
