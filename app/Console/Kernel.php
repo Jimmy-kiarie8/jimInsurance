@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\DB;
 
 class Kernel extends ConsoleKernel
 {
@@ -28,6 +29,11 @@ class Kernel extends ConsoleKernel
         //          ->hourly();
         $schedule->command('test:testcommand')
         ->everyMinute();
+        $schedule->call(function () {
+            DB::table('reminders')->insert(
+              ['policy_id' => 1, 'client_id' => 9]
+              );
+          })->everyMinute();
     }
 
     /**

@@ -3,6 +3,11 @@
 
 Route::get('sms', 'SmsController@sms')->name('sms');
 
+Route::get('myCronMethod', 'SmsController@myCronMethod')->name('myCronMethod');
+
+
+
+
 
 /*
 |--------------------------------------------------------------------------

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use AfricasTalking\SDK\AfricasTalking;
-
+use Illuminate\Support\Facades\Artisan;
 
 class SmsController extends Controller
 {
@@ -22,5 +22,9 @@ class SmsController extends Controller
         ]);
 
         print_r($result);
+    }
+    public function myCronMethod()
+    {
+        Artisan::call("test:testcommand");
     }
 }
