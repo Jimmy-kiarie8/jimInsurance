@@ -43,21 +43,21 @@
                                     </v-flex>
                                     <v-flex xs12 sm6>
                                         <el-select v-model="Editdata.InsClass_id" filterable clearable placeholder="Insurance Class">
-                                            <el-option v-for="item in InsClass" :key="item.id" :label="item.title" :value="item.id">
+                                            <el-option v-for="item in InsClass" :key="item.id" :label="item.code" :value="item.id">
                                             </el-option>
                                         </el-select>
                                     </v-flex>
                                     <v-flex xs12 sm6>
 
                                         <el-select v-model="Editdata.InsType_id" filterable clearable placeholder="Insurance Type">
-                                            <el-option v-for="item in InsType" :key="item.id" :label="item.title" :value="item.id">
+                                            <el-option v-for="item in InsType" :key="item.id" :label="item.code" :value="item.id">
                                             </el-option>
                                         </el-select>
                                     </v-flex>
                                     <v-flex xs12 sm6>
 
                                         <el-select v-model="Editdata.policy_status_id" filterable clearable placeholder="Policy Status">
-                                            <el-option v-for="item in PolicyStatus" :key="item.id" :label="item.title" :value="item.id">
+                                            <el-option v-for="item in PolicyStatus" :key="item.id" :label="item.code" :value="item.id">
                                             </el-option>
                                         </el-select>
                                     </v-flex>

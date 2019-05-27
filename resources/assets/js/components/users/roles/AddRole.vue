@@ -1,10 +1,15 @@
 <template>
 <v-layout row justify-center>
-    <v-dialog v-model="openAddRequest" persistent max-width="500px">
+    <v-dialog v-model="openAddRequest" persistent max-width="700px">
         <v-card>
             <v-card-title fixed>
-                <span class="headline">Add Role</span>
+                <span class="headline">Add R  ole</span>
+                <v-spacer></v-spacer>
+                <v-btn icon dark @click="close">
+                    <v-icon color="black">close</v-icon>
+                </v-btn>
             </v-card-title>
+
             <v-card-text>
                 <v-container grid-list-md>
                     <v-layout wrap>
@@ -12,19 +17,19 @@
                             <v-container grid-list-xl fluid>
                                 <v-layout wrap>
                                     <v-flex xs12 sm12>
-                                        <v-text-field v-model="form.name" :rules="rules.name" color="purple darken-2" label="Full name" required></v-text-field>
+                                        <v-text-field v-model="form.name" :rules="rules.name" color="blue darken-2" label="Role" required></v-text-field>
                                         <!-- <small class="has-text-danger" v-if="errors.name">{{ errors.name[0] }}</small> -->
-                                    </v-flex>
-                                    <v-flex xs12 sm12>
-                                        <v-textarea v-model="form.description" color="blue">
-                                            <div slot="label">
-                                                Description
-                                            </div>
-                                        </v-textarea>
+                                    </v-flex> 
+                                    <v-checkbox v-model="selectAll" label="Select All" value="all" @change="selectRoles"></v-checkbox>
+                                    <!-- <v-checkbox v-model="selectAll" label="Unselect All" value="all" @change="unselectRoles" v-else></v-checkbox> -->
+                                </v-layout> 
+                                <v-layout wrap>
+                                    <v-flex v-for="perm in sortPerm" :key="perm.id" xs6 sm3>
+                                        <v-checkbox v-model="selected" :label="perm.name" :value="perm.name"></v-checkbox>
                                     </v-flex>
                                 </v-layout>
                             </v-container>
-                            <v-card-actions>
+                            <v-card-actions>   
                                 <v-btn flat @click="resetForm">reset</v-btn>
                                 <v-btn flat @click="close">Close</v-btn>
                                 <v-spacer></v-spacer>
@@ -41,57 +46,86 @@
 
 <script>
 export default {
-    props: ['openAddRequest', 'AllBranches'],
+    props: ["openAddRequest"],
     data() {
         const defaultForm = Object.freeze({
-            name: '',
-            description: '',
-        })
+            name: "",
+            description: ""
+        });
         return {
+            errors: [],
+            selectAll: [],
             loading: false,
+            selected: [],
             defaultForm,
             loader: false,
+            permissions: [],
             form: Object.assign({}, defaultForm),
             rules: {
-                name: [val => (val || '').length > 0 || 'This field is required']
-            },
-        }
+                name: [val => (val || "").length > 0 || "This field is required"]
+            }
+        };
     },
     methods: {
         save() {
-            this.loading = true
-            axios.post('/roles', this.$data.form).
-            then((response) => {
-                    this.loading = false
+            this.loading = true;
+            axios
+                .post("/roles", {
+                    form: this.$data.form,
+                    selected: this.$data.selected
+                })
+                .then(response => {
+                    this.loading = false;
                     console.log(response);
-                    this.$emit('alertRequest');
-                    this.$parent.AllRoles.push(response.data)
+                    this.$emit("alertRequest");
+                    this.$parent.AllRoles.push(response.data);
                     this.resetForm();
-                    this.$emit('closeRequest');
-
+                    this.$emit("closeRequest");
                 })
-                .catch((error) => {
-                    this.loading = false
-                    this.errors = error.response.data.errors
-                })
+                .catch(error => {
+                    this.loading = false;
+                    this.errors = error.response.data.errors;
+                });
         },
         resetForm() {
-            this.form = Object.assign({}, this.defaultForm)
-            this.$refs.form.reset()
+            this.form = Object.assign({}, this.defaultForm);
+            this.$refs.form.reset();
         },
         close() {
-            this.$emit('closeRequest')
+            this.$emit("closeRequest");
         },
+        selectRoles() {
+            this.selected = [];
+            // console.log(sel)
+            this.selectAll.forEach(sel => {
+                this.permissions.forEach(perm => {
+                    this.selected.push(perm.name);
+                });
+            });
+            // console.log(this.selectAll)
+        }
+        // unselectRoles() {
+        //     this.selected = []
+        // }
     },
     computed: {
         formIsValid() {
-            return (
-                this.form.name
-            )
+            return this.form.name;
         },
+
+        sortPerm() {
+            return _.orderBy(this.permissions, 'name', 'asc')
+        }
     },
     mounted() {
-
+        axios
+            .get("/getPermissions")
+            .then(response => {
+                this.permissions = response.data;
+            })
+            .catch(errors => {
+                this.errors = error.response.data.errors;
+            });
     }
-}
+};
 </script>

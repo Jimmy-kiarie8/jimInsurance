@@ -23,7 +23,9 @@ class CreatePoliciesTable extends Migration
             $table->string('policy_no');
             $table->string('policy_status_id');
             $table->string('insured')->nullable();
+            $table->string('coverage')->nullable();
             $table->decimal('premium');
+            $table->decimal('premium_paid');
             $table->decimal('commission');
             $table->date('effective_date');
             $table->date('exp_date');

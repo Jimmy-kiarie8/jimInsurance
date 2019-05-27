@@ -1,5 +1,8 @@
 <?php
-use App\Company;
+
+
+Route::get('sms', 'SmsController@sms')->name('sms');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -11,7 +14,7 @@ use App\Company;
 | contains the "web" middleware group. Now create something great!
 |
  */
-	// Socialite
+// Socialite
 // Route::get('login/{service}', 'Auth\LoginController@redirectToProvider');
 // Route::get('login/{service}/callback', 'Auth\LoginController@handleProviderCallback');
 // Route::get('/search', 'ShipmentController@search')->name('search');
@@ -20,35 +23,54 @@ use App\Company;
 // });
 Route::get('verifyEmailFirst', 'Auth\RegisterController@verifyEmailFirst')->name('verifyEmailFirst');
 Route::get('/verify/{verifyToken}', 'EmailController@verify')->name('verify');
+Route::get('signup/activate/{token}', 'AuthController@signupActivate');
 
 Auth::routes();
 
 Route::group(['middleware' => ['auth']], function () {
-	Route::get('/insurance/{name}', function () {
-		return redirect('/');
-	})->where('name', '[A-Za-z]+');
+	
+	Route::get('/logoutOther', 'UserController@logoutOther')->name('logoutOther');
+	Route::post('/logOtherDevices', 'UserController@logOtherDevices')->name('logOtherDevices');
+	// Route::get('/insurance/{name}', function () {
+	// 	return redirect('/');
+	// })->where('name', '[A-Za-z]+');
 
-	Route::get('/insurance', function () {
-	    $companies = Company::where('id', Auth::user()->company_id)->get();
-	    foreach ($companies as $company) {
-	        $company_logo = $company->logo;
-	    }
-		$newrole = Auth::user()->roles;
-		foreach ($newrole as $name) {
-			$rolename = $name->name;
-		}
-		return view('welcome', compact('rolename', 'company_logo'));
+	Route::get('/home', function () {
+		return redirect('/');
 	});
 
-	Route::get('/home', 'HomeController@index')->name('home');
+	// Route::get('/', function () {
+	// 	$companies = Company::where('id', Auth::user()->company_id)->get();
+	// 	foreach ($companies as $company) {
+	// 		$company_logo = $company->logo;
+	// 	}
+	// 	$newrole = Auth::user()->roles;
+	// 	foreach ($newrole as $name) {
+	// 		$rolename = $name->name;
+	// 	}
+	// 	return view('welcome', compact('rolename', 'company_logo'));
+	// });
+	Route::get('/', 'HomeController@insurance')->name('insurance');
+	Route::get('/insurance', 'HomeController@insurance')->name('insurance');
 	Route::resource('users', 'UserController');
 	Route::resource('roles', 'RoleController');
 	Route::resource('branches', 'BranchController');
 	Route::resource('email', 'EmailController');
 	Route::resource('policy', 'PolicyController');
 	Route::resource('certificates', 'CertificateController');
+	Route::resource('companyprofile', 'CompanyprofileController');
 	Route::resource('companies', 'CompanyController');
+	Route::resource('coverage', 'CoverageController');
 	Route::resource('clients', 'ClientController');
+	Route::resource('insuracetype', 'InsuranceTypeController');
+	Route::resource('policystatus', 'PolicyStatusController');
+	Route::resource('insuraceclass', 'InsuranceClassController');
+	Route::resource('roles', 'RoleController');
+	Route::get('getUsersRole', 'RoleController@getUsersRole')->name('getUsersRole');
+	Route::get('getRoles', 'RoleController@getRoles')->name('getRoles');
+	Route::get('getPermissions', 'RoleController@getPermissions')->name('getPermissions');
+	Route::post('getRolesPerm/{id}', 'RoleController@getRolesPerm')->name('getRolesPerm');
+	Route::get('getRoles', 'RoleController@getRoles')->name('getRoles');
 
 	Route::get('getUsers', 'UserController@getUsers')->name('getUsers');
 	Route::get('getDrivers', 'UserController@getDrivers')->name('getDrivers');
@@ -70,6 +92,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('/subscribe', 'EmailController@subscribe')->name('subscribe');
 	Route::post('/refresh/{id}', 'EmailController@refresh')->name('refresh');
 
+	Route::get('/file_no', 'PolicyController@file_no')->name('file_no');
 	Route::get('/getPolicy', 'PolicyController@getPolicy')->name('getPolicy');
 
 	Route::get('/getunsubscribed', 'EmailController@getunsubscribed')->name('getunsubscribed');
@@ -91,32 +114,30 @@ Route::group(['middleware' => ['auth']], function () {
 
 
 	// Reports
-	Route::post('/report', 'ReportController@report')->name('report');
+	Route::post('/premium', 'ReportController@premium')->name('premium');
+	Route::post('/products', 'ReportController@products')->name('products');
+	Route::post('/reminder', 'ReportController@reminder')->name('reminder');
 
-	
+
 	Route::post('getCompanies', 'CompanyController@getCompanies')->name('getCompanies');
 	Route::post('getCompanyAdmin', 'CompanyController@getCompanyAdmin')->name('getCompanyAdmin');
 	Route::post('companupdate/{id}', 'CompanyController@companupdate')->name('companupdate');
 	Route::post('logo/{id}', 'CompanyController@logo')->name('logo');
 	Route::post('getLogo', 'CompanyController@getLogo')->name('getLogo');
 	Route::post('getLogoOnly', 'CompanyController@getLogoOnly')->name('getLogoOnly');
-	
+
+	Route::post('profilelogo/{id}', 'CompanyprofileController@profilelogo')->name('profilelogo');
+
 	Route::get('getClients', 'ClientController@getClients')->name('getClients');
-	
-
-
-
-
-
-
+	Route::get('client_no', 'ClientController@client_no')->name('client_no');
 
 	Route::any('user_count', 'DashboardController@user_count')->name('user_count');
-    Route::any('client_count', 'DashboardController@client_count')->name('client_count');
-    Route::any('t_policies_count', 'DashboardController@t_policies_count')->name('t_policies_count');
-    Route::any('policies_count', 'DashboardController@policies_count')->name('policies_count');
-    Route::any('certificate_batch', 'DashboardController@certificate_batch')->name('certificate_batch');
-    Route::any('t_certificate_batch', 'DashboardController@t_certificate_batch')->name('t_certificate_batch');
-    Route::any('branches_count', 'DashboardController@branches_count')->name('branches_count');
-    Route::any('t_policy_count', 'DashboardController@t_policy_count')->name('t_policy_count');
-    Route::any('branches_count', 'DashboardController@branches_count')->name('branches_count');
+	Route::any('client_count', 'DashboardController@client_count')->name('client_count');
+	Route::any('t_policies_count', 'DashboardController@t_policies_count')->name('t_policies_count');
+	Route::any('policies_count', 'DashboardController@policies_count')->name('policies_count');
+	Route::any('certificate_batch', 'DashboardController@certificate_batch')->name('certificate_batch');
+	Route::any('t_certificate_batch', 'DashboardController@t_certificate_batch')->name('t_certificate_batch');
+	Route::any('branches_count', 'DashboardController@branches_count')->name('branches_count');
+	Route::any('t_policy_count', 'DashboardController@t_policy_count')->name('t_policy_count');
+	Route::any('branches_count', 'DashboardController@branches_count')->name('branches_count');
 });

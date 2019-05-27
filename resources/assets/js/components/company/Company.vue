@@ -17,15 +17,20 @@
                         Companies
                         <v-btn color="primary" raised @click="openAdd">Add Company</v-btn>
 
-                        <v-btn icon class="mx-0" @click="getCompany()">
-                            <v-icon color="blue darken-2">refresh</v-icon>
-                        </v-btn>
+                        <v-tooltip right>
+                            <v-btn icon slot="activator" class="mx-0" @click="getCompany">
+                                <v-icon color="blue darken-2" small>refresh</v-icon>
+                            </v-btn>
+                            <span>Refresh</span>
+                        </v-tooltip>
                         <v-spacer></v-spacer>
                         <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
                     </v-card-title>
-                    <v-data-table :headers="headers" :items="AllCompanies" :search="search" counter class="elevation-1">
+                    <v-data-table :headers="headers" :loading="loading" :items="AllCompanies" :search="search" counter class="elevation-1">
+                        <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
                         <template slot="items" slot-scope="props">
                             <td>{{ props.item.company_name }}</td>
+                            <td class="text-xs-right">{{ props.item.code }}</td>
                             <td class="text-xs-right">{{ props.item.phone }}</td>
                             <td class="text-xs-right">{{ props.item.email }}</td>
                             <td class="text-xs-right">{{ props.item.address }}</td>
@@ -91,11 +96,13 @@ export default {
             x: 'left',
             dialog: false,
             loading: false,
-            loading: false,
             headers: [{
                     text: 'Company Name',
                     align: 'left',
                     value: 'company_name'
+                },{
+                    text: 'Code',
+                    value: 'code'
                 },
                 {
                     text: 'Telephone Number',
@@ -178,15 +185,17 @@ export default {
         },
 
         getCompany() {
-
+            this.loading = true
             axios.post('getCompanies')
                 .then((response) => {
                     this.AllCompanies = response.data
+                    this.loading = false
                     this.loader = false
                 })
                 .catch((error) => {
-                    this.errors = error.response.data.errors
+                    this.loading = false
                     this.loader = false
+                    this.errors = error.response.data.errors
                 })
 
         }

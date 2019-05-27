@@ -4,48 +4,104 @@
         <v-progress-circular :width="3" indeterminate color="pink" style="margin: 1rem"></v-progress-circular>
     </div>
     <v-container fluid fill-height>
-        <div v-show="!loader" width="100%">
+        <div v-show="!loader" style="width: 100%">
             <v-layout justify-center align-center>
-                <v-card style="width 50%;">
-                    <v-card-title fixed>
-                        <span class="headline">Reports</span>
-                    </v-card-title>
-                    <v-card-text>
-                        <v-container grid-list-md>
-                            <v-layout wrap>
-                                <v-container grid-list-xl fluid>
-                                    <v-layout wrap>
-
-                                        <v-flex sm5 offset-sm1>
-                                            <v-select :items="items" v-model="select" :hint="`${select.type}}`" label="Select Report" single-line item-text="type" item-value="Rtype" return-object persistent-hint></v-select>
-                                        </v-flex>
-                                        <v-flex sm5 offset-sm1>
-                                            <v-select :items="AllClients" v-model="selectC" label="Select Client" single-line item-text="name" item-value="id" return-object persistent-hint></v-select>
-                                        </v-flex>
-                                        <v-flex xs5 sm5 offset-sm1>
-                                            <v-text-field v-model="form.start_date" label="start date" type="date" color="blue darken-2" required></v-text-field>
-                                        </v-flex>
-                                        <v-flex xs5 sm5 offset-sm1>
-                                            <v-text-field v-model="form.end_date" label="End Date" type="date" color="blue darken-2" required></v-text-field>
-                                        </v-flex>
-                                    </v-layout>
-                                </v-container>
-                            </v-layout>
-                        </v-container>
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-btn flat>
-                            <v-btn flat type="submit" success color="primary" @click="download">Filter</v-btn>
-                            <v-spacer></v-spacer>
-                            <download-excel :data="Report">
-                                Export
-                                <img src="/storage/csv.png" style="width: 30px; height: 30px; cursor: pointer;">
-                            </download-excel>
-                        </v-btn>
-                    </v-card-actions>
-                </v-card>
+                <v-container grid-list-md>
+                    <v-layout wrap>
+                        <v-flex sm12>
+                            <v-container grid-list-xl fluid>
+                                <v-layout wrap>
+                                    <v-flex sm4>
+                                        <v-card>
+                                            <v-card-title fixed>
+                                                <span class="headline">Premium balances </span>
+                                            </v-card-title>
+                                            <v-divider></v-divider>
+                                            <el-select v-model="form.client" clearable filterable placeholder="Select Client">
+                                                <el-option v-for="item in AllClients" :key="item.id" :label="item.name" :value="item.id">
+                                                </el-option>
+                                            </el-select>
+                                            <v-flex sm10>
+                                                <v-text-field v-model="form.start_date" label="start date" type="date" color="blue darken-2" required></v-text-field>
+                                            </v-flex>
+                                            <v-flex sm10>
+                                                <v-text-field v-model="form.end_date" label="End Date" type="date" color="blue darken-2" required></v-text-field>
+                                            </v-flex>
+                                            <v-card-actions>
+                                                <v-btn flat color="primary" @click="download">Filter</v-btn>
+                                                <v-spacer></v-spacer>
+                                                <v-btn flat>
+                                                    <download-excel :data="Report" :fields="premium_fields">
+                                                        Export
+                                                        <img src="/storage/csv.png" style="width: 30px; height: 30px; cursor: pointer;">
+                                                        </download-excel>
+                                                </v-btn>
+                                            </v-card-actions>
+                                        </v-card>
+                                    </v-flex>
+                                    <v-flex sm4>
+                                        <v-card>
+                                            <v-card-title fixed>
+                                                <span class="headline">Renewal reminders </span>
+                                            </v-card-title>
+                                            <v-divider></v-divider>
+                                            <!-- <el-select v-model="form.client" clearable filterable placeholder="Select Client">
+                                                <el-option v-for="item in AllClients" :key="item.id" :label="item.name" :value="item.id">
+                                                </el-option>
+                                            </el-select> -->
+                                            <v-flex sm10>
+                                                <v-text-field v-model="reminder.start_date" label="start date" type="date" color="blue darken-2" required></v-text-field>
+                                            </v-flex>
+                                            <v-flex sm10>
+                                                <v-text-field v-model="reminder.end_date" label="End Date" type="date" color="blue darken-2" required></v-text-field>
+                                            </v-flex>
+                                            <v-card-actions>
+                                                <v-btn flat color="primary" @click="reminderReport()">Filter</v-btn>
+                                                <v-spacer></v-spacer>
+                                                <v-btn flat>
+                                                    <download-excel :data="filterreminder" :fields="reminder_fields">
+                                                        Export
+                                                        <img src="/storage/csv.png" style="width: 30px; height: 30px; cursor: pointer;">
+                                                    </download-excel>
+                                                </v-btn>
+                                            </v-card-actions>
+                                        </v-card>
+                                    </v-flex>
+                                    <v-flex sm4>
+                                        <v-card>
+                                            <v-card-title fixed>
+                                                <span class="headline">Production report</span>
+                                            </v-card-title>
+                                            <v-divider></v-divider>
+                                            <v-flex sm10>
+                                                <v-text-field v-model="products.start_date" label="start date" type="date" color="blue darken-2" required></v-text-field>
+                                            </v-flex>
+                                            <v-flex sm10>
+                                                <v-text-field v-model="products.end_date" label="End Date" type="date" color="blue darken-2" required></v-text-field>
+                                            </v-flex>
+                                            <v-card-actions>
+                                                <v-btn flat color="primary" @click="productReport()">Filter</v-btn>
+                                                <v-spacer></v-spacer>
+                                                <v-btn flat>
+                                                    <download-excel :data="filterproducts" :fields="product_fields">
+                                                        Export
+                                                        <img src="/storage/csv.png" style="width: 30px; height: 30px; cursor: pointer;">
+                                                        </download-excel>
+                                                </v-btn>
+                                            </v-card-actions>
+                                        </v-card>
+                                    </v-flex>
+                                </v-layout>
+                            </v-container>
+                        </v-flex>
+                    </v-layout>
+                </v-container>
             </v-layout>
         </div>
+        <v-snackbar v-model="snackbar" absolute top right :color="color">
+            <span>{{ message }}</span>
+            <v-icon dark>{{ check_circle }}</v-icon>
+        </v-snackbar>
     </v-container>
 </v-content>
 </template>
@@ -54,8 +110,9 @@
 export default {
     data() {
         return {
-            AllClients: [],
-            AllDrivers: [],
+            snackbar: false,
+            color: 'black',
+            message: '',
             form: {
                 start_date: '',
                 end_date: '',
@@ -65,49 +122,113 @@ export default {
                 name: 'All',
                 id: 'all',
             }],
+            filterproducts: [],
+            filterreminder: [],
+            reminder: {},
+            products: {},
             Report: [],
             loader: false,
             loading: false,
-            select: [{
-                type: 'Premium',
-                Rtype: 'premium',
-            }, ],
-            items: [{
-                    type: 'Premium',
-                    Rtype: 'premium',
-                },
-                {
-                    type: 'Renewal reminders',
-                    Rtype: 'renewal',
-                },
-                {
-                    type: 'Production report',
-                    Rtype: 'product',
-                },
-            ]
+            premium_fields: {
+                "Client Number": "client_no",
+                "Client Name": "client_name",
+                "Effective Date": "effective_date",
+                "Expiry Date": "exp_date",
+                "Insured": "insured",
+                "Premium Charge": "premium",
+                "Premium Paid": "premium_paid",
+                "Balance": "balance",
+                "Created On": "created_at",
+            },
+            product_fields: {
+                "Client Number": "client_no",
+                "Client Name": "client_name",
+                "Effective Date": "effective_date",
+                "Expiry Date": "exp_date",
+                "Insured": "insured",
+                "Premium Charge": "premium",
+                "Premium Paid": "premium_paid",
+                "Balance": "balance",
+                "Created On": "created_at",
+            },
+            reminder_fields: {
+                "Client Number": "client_no",
+                "Client Name": "client_name",
+                "Client Phone": "client_phone",
+                "Effective Date": "effective_date",
+                "Expiry Date": "exp_date",
+                "Insured": "insured",
+                "Balance": "balance",
+                "Created On": "created_at",
+            }
         }
     },
     methods: {
         download() {
-            axios.post("report", {
-                    form: this.form,
-                    report: this.select,
-                    client: this.selectC,
-                })
+            axios.post("premium", this.form)
                 .then(response => {
                     this.loading = false;
                     this.Report = response.data;
+                    if (response.data.length > 0) {
+                        this.snackbar = true
+                        this.color = 'indigo'
+                        this.message = 'Data fetched'
+                    } else {
+                        this.snackbar = true
+                        this.color = 'red'
+                        this.message = 'No Data'
+                    }
                 })
                 .catch(error => {
                     this.loading = false;
                     this.errors = error.response.data.errors;
                 });
-        }
+        },
+        productReport() {
+            axios.post("products", this.products)
+                .then(response => {
+                    this.loading = false;
+                    this.filterproducts = response.data;
+                    if (response.data.length > 0) {
+                        this.snackbar = true
+                        this.color = 'indigo'
+                        this.message = 'Data fetched'
+                    } else {
+                        this.snackbar = true
+                        this.color = 'red'
+                        this.message = 'No Data'
+                    }
+                })
+                .catch(error => {
+                    this.loading = false;
+                    this.errors = error.response.data.errors;
+                });
+        },
+        reminderReport() {
+            axios.post("reminder", this.reminder)
+                .then(response => {
+                    this.loading = false;
+                    this.filterreminder = response.data;
+                    if (response.data.length > 0) {
+                        this.snackbar = true
+                        this.color = 'indigo'
+                        this.message = 'Data fetched'
+                    } else {
+                        this.snackbar = true
+                        this.color = 'red'
+                        this.message = 'No Data'
+                    }
+                })
+                .catch(error => {
+                    this.loading = false;
+                    this.errors = error.response.data.errors;
+                });
+        },
     },
     mounted() {
         this.loader = true;
 
-        axios.get("getCustomer")
+        axios.get("clients")
             .then(response => {
                 this.loader = false;
                 this.AllClients = response.data;

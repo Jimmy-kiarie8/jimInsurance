@@ -32,9 +32,9 @@
                                 <v-btn icon class="mx-0" @click="editItem(props.item)">
                                     <v-icon color="blue darken-2" small>edit</v-icon>
                                 </v-btn>
-                                <v-btn icon class="mx-0" @click="printItem(props.item)">
+                                <!-- <v-btn icon class="mx-0" @click="printItem(props.item)">
                                     <v-icon color="indigo darken-2" small>print</v-icon>
-                                </v-btn>
+                                </v-btn> -->
                                 <v-btn icon class="mx-0" @click="deleteItem(props.item)">
                                     <v-icon color="pink darken-2" small>delete</v-icon>
                                 </v-btn>
@@ -52,8 +52,8 @@
             </v-layout>
         </v-container>
     </v-content>
-    <AddPolicy :openAddRequest="OpenAdd" @closeRequest="close" @alertRequest="alert" :clients="allClients"></AddPolicy>
-    <EditPolicy :openEditRequest="editModal" @closeRequest="close" @alertRequest="alert" :Editdata="editedItem" :clients="allClients"></EditPolicy>
+    <AddPolicy :openAddRequest="OpenAdd" @closeRequest="close" @alertRequest="alert" :clients="allClients" :company="allCompanies" :coverage="allCoverages" :file_no="file_no"></AddPolicy>
+    <EditPolicy :openEditRequest="editModal" @closeRequest="close" @alertRequest="alert" :Editdata="editedItem" :clients="allClients" :company="allCompanies" :coverage="allCoverages"></EditPolicy>
     <PrintCert :openPrintRequest="openPrint" @closeRequest="close" @alertRequest="alert" :printData="editedItem"></PrintCert>
     <v-snackbar :timeout="timeout" bottom='bottom' :color="color" left='left' v-model="snackbar">
         {{ message }}
@@ -79,6 +79,7 @@ export default {
             loading: false,
             OpenAdd: false,
             openPrint: false,
+            file_no: null,
             search: '',
             snackbar: false,
             timeout: 5000,
@@ -120,13 +121,17 @@ export default {
             allClients: [],
             AllPolicies: [],
             editedItem: {},
-            editedItem: {},
+            allCoverages: [],
+            allCompanies: [],
         }
     },
 
     methods: {
         editItem(item) {
             this.editModal = true
+            this.getClient()
+            this.getCoverage()
+            this.getCompany()
             this.editedIndex = this.AllPolicies.indexOf(item)
             this.editedItem = Object.assign({}, item)
         },
@@ -137,6 +142,10 @@ export default {
         },
         openAdd() {
             this.OpenAdd = true
+            this.getClient()
+            this.getCompany()
+            this.getCoverage()
+            this.getFileno()
         },
 
         deleteItem(item) {
@@ -176,11 +185,34 @@ export default {
                 .catch((error) => {
                     this.errors = error.response.data.errors
                 })
+        },
+        getCompany() {
+            axios.get('companies')
+                .then((response) => {
+                    this.allCompanies = response.data
+                })
+                .catch((error) => {
+                    this.errors = error.response.data.errors
+                })
+        },
+        getCoverage() {
+            axios.get('coverage')
+                .then((response) => {
+                    this.allCoverages = response.data
+                })
+                .catch((error) => {
+                    this.errors = error.response.data.errors
+                })
+        },
+        getFileno() {
+        axios.get('/file_no')
+            .then((response) => {
+                this.file_no = 'file_' + response.data
+            })
         }
     },
     mounted() {
         this.loader = true
-        this.getClient()
         this.getPolicy()
 
     },

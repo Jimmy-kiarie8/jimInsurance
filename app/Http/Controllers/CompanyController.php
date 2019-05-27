@@ -5,9 +5,21 @@ namespace App\Http\Controllers;
 use App\Company;
 use Illuminate\Http\Request;
 use Auth;
+use App\Companyprofile;
 
 class CompanyController extends Controller
 {
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        // return $request->all();
+        return Company::all();
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -18,6 +30,7 @@ class CompanyController extends Controller
     {
         // return $request->all();
         $company = new Company;
+        $company->code = $request->code;
         $company->company_name = $request->company_name;
         $company->user_id = Auth::id();
         $company->email = $request->email;
@@ -40,8 +53,8 @@ class CompanyController extends Controller
     {
         // return $request->all();
         $company = Company::find($id);
+        $company->code = $request->code;
         $company->company_name = $request->company_name;
-        $company->user_id = Auth::id();
         $company->email = $request->email;
         $company->phone = $request->phone;
         $company->logo = $request->logo;
@@ -66,7 +79,7 @@ class CompanyController extends Controller
 		return json_decode(json_encode(Company::all()), true);
 	}
 	public function getCompanyAdmin() {
-		$userRoles = User::with(['roles'])->get();
+		$userRoles = User::all();
 		$user = [];
 		$IdArr = [];
 		foreach ($userRoles as $value) {
@@ -97,14 +110,14 @@ class CompanyController extends Controller
 
 	public function getLogo()
 	{
-		return Company::where('id', Auth::user()->branch_id)->get();
+		return Companyprofile::first();
 	}
 
 
 
 	public function getLogoOnly()
 	{
-		$companies = Company::where('id', Auth::user()->branch_id)->get();
+		$companies = Companyprofile::first();
 		foreach ($companies as $company) {
 			$company_logo = $company->logo;
 		}

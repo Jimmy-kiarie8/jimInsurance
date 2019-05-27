@@ -15,7 +15,8 @@ class CreateInsuranceTypesTable extends Migration
     {
         Schema::create('insurance_types', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('title');
+            $table->integer('user_id');
+            $table->string('code');
             $table->text('description')->nullable();
             $table->softDeletes();
             $table->timestamps();

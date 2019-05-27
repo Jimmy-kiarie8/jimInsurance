@@ -12,23 +12,27 @@
                             <v-container grid-list-xl fluid>
                                 <v-layout wrap>
                                     <v-flex xs12 sm6>
-                                        <v-text-field v-model="company.company_name" :rules="rules.name" color="blue darken-2" label="Company name" required></v-text-field>
+                                    <v-flex xs12 sm6>
+                                        <v-text-field v-model="company.code" color="blue darken-2" label="Code" required></v-text-field>
+                                        <small class="has-text-danger" v-if="errors.code">{{ errors.code[0] }}</small>
+                                    </v-flex>
+                                        <v-text-field v-model="company.company_name" color="blue darken-2" label="Company name" required></v-text-field>
                                         <small class="has-text-danger" v-if="errors.company_name">{{ errors.company_name[0] }}</small>
                                     </v-flex>
                                     <v-flex xs12 sm6>
-                                        <v-text-field v-model="company.address" :rules="rules.name" color="blue darken-2" label="Company Address" required></v-text-field>
+                                        <v-text-field v-model="company.address" color="blue darken-2" label="Company Address" required></v-text-field>
                                         <small class="has-text-danger" v-if="errors.address">{{ errors.address[0] }}</small>
                                     </v-flex>
                                     <v-flex xs12 sm6>
-                                        <v-text-field v-model="company.phone" :rules="rules.name" color="blue darken-2" label="Telephone Number" required></v-text-field>
+                                        <v-text-field v-model="company.phone" color="blue darken-2" label="Telephone Number" required></v-text-field>
                                         <small class="has-text-danger" v-if="errors.phone">{{ errors.phone[0] }}</small>
                                     </v-flex>
                                     <v-flex xs12 sm6>
-                                        <v-text-field v-model="company.email" :rules="rules.name" color="blue darken-2" label="Company Email" required></v-text-field>
+                                        <v-text-field v-model="company.email" color="blue darken-2" label="Company Email" required></v-text-field>
                                         <small class="has-text-danger" v-if="errors.email">{{ errors.email[0] }}</small>
                                     </v-flex>
                                     <v-flex xs12 sm6>
-                                        <v-text-field v-model="company.website" :rules="rules.name" color="blue darken-2" label="Company Website" required></v-text-field>
+                                        <v-text-field v-model="company.website" color="blue darken-2" label="Company Website" required></v-text-field>
                                         <small class="has-text-danger" v-if="errors.website">{{ errors.website[0] }}</small>
                                     </v-flex>
                                 </v-layout>

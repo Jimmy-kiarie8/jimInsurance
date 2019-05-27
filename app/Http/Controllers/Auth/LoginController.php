@@ -29,7 +29,7 @@ class LoginController extends Controller {
 	 *
 	 * @var string
 	 */
-	protected $redirectTo = '/insurance';
+	protected $redirectTo = '/';
 
 	/**
 	 * Create a new controller instance.
@@ -82,10 +82,10 @@ class LoginController extends Controller {
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return array
 	 */
-	// protected function credentials(Request $request)
-	// {
-	//     $credentials = $request->only($this->username(), 'password');
-	//     $credentials['status'] = 1;
-	//     return $credentials;
-	// }
+	protected function credentials(Request $request)
+	{
+	    $credentials = $request->only($this->username(), 'password');
+	    $credentials['verifyToken'] = '';
+	    return $credentials;
+	}
 }

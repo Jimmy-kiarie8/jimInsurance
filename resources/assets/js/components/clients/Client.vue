@@ -4,16 +4,6 @@
         <v-container fluid fill-height v-show="!loader">
             <v-layout justify-center align-center>
                 <div class="container">
-                    <v-card style="background: rgba(5, 117, 230, 0.16);">
-                        <v-layout wrap>
-                            <v-flex xs4 sm3 offset-sm4>
-                                <v-select :items="AllBranches" v-model="select" :hint="`${select.branch_name}, ${select.id}`" label="Select Branch" single-line item-text="branch_name" item-value="id" return-object persistent-hint></v-select>
-                            </v-flex>
-                            <v-flex xs4 sm3>
-                                <v-btn raised color="info" @click="sort">Filter</v-btn>
-                            </v-flex>
-                        </v-layout>
-                    </v-card>
                     <v-card-title>
                         Clients
                         <v-btn slot="activator" color="primary" dark @click="openAdd">Add Client</v-btn>
@@ -27,10 +17,10 @@
                         <v-text-field v-model="search" append-icon="search" label="Search" single-line></v-text-field>
                     </v-card-title>
                     <v-data-table :headers="headers" :items="AllClients" class="elevation-1" :loading="loading" :search="search">
-                        <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
+                        <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
                         <template slot="items" slot-scope="props">
-                            <td>{{ props.item.name }}</td>
-                            <td class="text-xs-right">{{ props.item.client_no }}</td>
+                            <td>{{ props.item.client_no }}</td>
+                            <td class="text-xs-right">{{ props.item.name }}</td>
                             <td class="text-xs-right">{{ props.item.email }}</td>
                             <td class="text-xs-right">{{ props.item.phone }}</td>
                             <td class="text-xs-right">{{ props.item.birth_day }}</td>
@@ -63,18 +53,18 @@
             <v-icon dark right>check_circle</v-icon>
         </v-snackbar>
     </v-content>
-    <AddClient @closeRequest="close" :openAddRequest="dispAdd" @alertRequest="showAlert" :AllBranches="AllBranches"></AddClient>
+    <AddClient @closeRequest="close" :openAddRequest="dispAdd" @alertRequest="showAlert" :company="allCompanies" :client_no="client_no"></AddClient>
     <ShowClient @closeRequest="close" :openShowRequest="dispShow" :showData="editedItem"></ShowClient>
-    <EditClient @closeRequest="close" :openEditRequest="dispEdit" @alertRequest="showAlert" :form="editedItem" :AllBranches="AllBranches"></EditClient>
+    <EditClient @closeRequest="close" :openEditRequest="dispEdit" @alertRequest="showAlert" :form="editedItem" :company="allCompanies"></EditClient>
 </div>
 </template>
 
 <script>
-let AddClient = require('./AddClient.vue')
-let ShowClient = require('./ShowClient.vue')
-let EditClient = require('./EditClient.vue')
+let AddClient = require("./AddClient.vue");
+let ShowClient = require("./ShowClient.vue");
+let EditClient = require("./EditClient.vue");
 export default {
-    props: ['user', 'role'],
+    props: ["user", "role"],
     components: {
         AddClient,
         ShowClient,
@@ -82,13 +72,14 @@ export default {
     },
     data() {
         return {
-            headers: [{
-                    text: "Name",
-                    value: "name"
-                },
+            headers: [
                 {
                     text: "Client Number",
                     value: "client_no"
+                },
+                {
+                    text: "Name",
+                    value: "name"
                 },
                 {
                     text: "Email",
@@ -107,13 +98,13 @@ export default {
                     value: "created_at"
                 },
                 {
-                    text: 'Actions',
-                    value: 'name',
+                    text: "Actions",
+                    value: "name",
                     sortable: false
                 }
             ],
-            AllBranches: [],
-            search: '',
+            allCompanies: [],
+            search: "",
             loader: false,
             dispAdd: false,
             dispShow: false,
@@ -121,98 +112,110 @@ export default {
             snackbar: false,
             loading: false,
             timeout: 5000,
-            color: 'black',
-            message: 'Success',
+            color: "black",
+            message: "Success",
             AllClients: [],
             editedItem: {},
+            client_no: '',
             select: {
-                branch_name: 'All',
-                id: 'all'
-            },
-        }
+                branch_name: "All",
+                id: "all"
+            }
+        };
     },
     methods: {
         openShow(item) {
-            
-            this.editedIndex = this.AllClients.indexOf(item)
-            this.editedItem = Object.assign({}, item)
-            this.dispShow = true
+            this.editedIndex = this.AllClients.indexOf(item);
+            this.editedItem = Object.assign({}, item);
+            this.dispShow = true;
         },
         openAdd() {
-            this.dispAdd = true
+            this.dispAdd = true;
+            this.getClientno()
         },
         openEdit(item) {
-            this.editedIndex = this.AllClients.indexOf(item)
-            this.editedItem = Object.assign({}, item)
+            this.editedIndex = this.AllClients.indexOf(item);
+            this.editedItem = Object.assign({}, item);
             // this.$children[4].list = this.company[key]
             // this.$children[3].form = this.AllClients[key]
-            this.dispEdit = true
+            this.dispEdit = true;
         },
         showAlert() {
-            this.message = 'Successifully Added';
+            this.message = "Successifully Added";
             this.snackbar = true;
-            this.color = 'black';
+            this.color = "black";
         },
         sort() {
-            this.loading = true
-            axios.post('getSorted', this.select)
-                .then((response) => {
-                    this.loading = false
-                    this.AllClients = response.data
+            this.loading = true;
+            axios
+                .post("getSorted", this.select)
+                .then(response => {
+                    this.loading = false;
+                    this.AllClients = response.data;
                 })
-                .catch((error) => {
-                    this.loading = false
-                    this.errors = error.response.data.errors
-                })
+                .catch(error => {
+                    this.loading = false;
+                    this.errors = error.response.data.errors;
+                });
         },
         deleteItem(item) {
-            if (confirm('Are you sure you want to delete this item?')) {
-                this.loader = true
-                axios.delete(`/users/${id}`)
-                    .then((response) => {
-                        this.AllClients.splice(index, 1)
-                        this.loader = false
-                        this.message = 'deleted successifully'
-                        this.color = 'red'
-                        this.snackbar = true
+            if (confirm("Are you sure you want to delete this item?")) {
+                this.loading = true;
+                axios
+                    .delete(`/users/${id}`)
+                    .then(response => {
+                        this.AllClients.splice(index, 1);
+                        this.loading = false;
+                        this.message = "deleted successifully";
+                        this.color = "red";
+                        this.snackbar = true;
                     })
-                    .catch((error) => {
-                        this.errors = error.response.data.errors
-                        this.loader = false
-                        this.message = 'something went wrong'
-                        this.color = 'red'
-                        this.snackbar = true
-                    })
+                    .catch(error => {
+                        this.loading = false;
+                        this.message = "something went wrong";
+                        this.color = "red";
+                        this.snackbar = true;
+                        this.errors = error.response.data.errors;
+                    });
             }
         },
         close() {
-            this.dispAdd = this.dispShow = this.dispEdit = false
+            this.dispAdd = this.dispShow = this.dispEdit = false;
         },
         getClients() {
-            axios.get('getClients')
-                .then((response) => {
-                    this.AllClients = response.data
-                    this.loading = false
+            this.loading = true;
+            axios
+                .get("getClients")
+                .then(response => {
+                    this.AllClients = response.data;
+                    this.loading = false;
                 })
-                .catch((error) => {
-                    this.loading = false
-                    this.errors = error.response.data.errors
+                .catch(error => {
+                    this.loading = false;
+                    this.errors = error.response.data.errors;
+                });
+        },
+        getClientno() {
+            axios.get('/client_no')
+                .then((response) => {
+                    this.client_no = 'client_' + response.data
                 })
         }
     },
     mounted() {
-        this.loader = true
-        this.getClients()
-        axios.get('getBranch')
-            .then((response) => {
-                this.loader = false
-                this.AllBranches = response.data
+        this.loader = true;
+        this.getClients();
+        axios
+            .get("companies")
+            .then(response => {
+                this.loader = false;
+                this.allCompanies = response.data;
             })
-            .catch((error) => {
-                this.loader = false
-                this.errors = error.response.data.errors
-            })
-    },
+            .catch(error => {
+                this.loader = false;
+                this.errors = error.response.data.errors;
+            });
+    }
     // beforeRouteEnter(to, from, next) {
     //     next(vm => {
     //         if (vm.role === 'Admin' || vm.role === 'companyAdmin') {
@@ -222,5 +225,5 @@ export default {
     //         }
     //     })
     // }
-}
+};
 </script>

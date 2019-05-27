@@ -19,6 +19,7 @@ class CreateClientsTable extends Migration
             $table->string('name');
             $table->string('email');
             $table->string('client_no');
+            $table->string('company_id');
             $table->string('phone');
             $table->date('birth_day');
             $table->string('pin_no');

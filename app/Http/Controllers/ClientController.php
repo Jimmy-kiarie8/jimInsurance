@@ -26,9 +26,9 @@ class ClientController extends Controller
         $client->email = $request->email;
         $client->phone = $request->phone;
         $client->birth_day = $request->birth_day;
-        $client->client_no = 'client_'.$request->client_no;
+        $client->client_no = $request->client_no;
         $client->pin_no = $request->pin_no;
-        $client->branch_id = Auth::user()->branch_id;
+        $client->company_id = Auth::user()->company_id;
         $client->user_id = Auth::id();
         $client->save();
         return $client;
@@ -69,5 +69,16 @@ class ClientController extends Controller
     public function getClients()
     {
         return Client::all();
+    }
+
+    public function client_no()
+    {
+        $file =  Client::select('client_no')->orderBy('id', 'desc')->first();
+        if ($file) {
+            $file_array = explode('_', $file->client_no);
+            return $file_array[1] + 1;
+        } else {
+            return 1;
+        }
     }
 }

@@ -12,24 +12,29 @@
                             <v-container grid-list-xl fluid>
                                 <v-layout wrap>
                                     <v-flex xs12 sm6>
-                                        <v-text-field v-model="form.file_no" :rules="rules.name" color="blue darken-2" label="File Number" required>
+                                        <v-text-field v-model="file_no" color="blue darken-2" label="File Number" required disabled>
                                         </v-text-field>
                                         <!-- <small class="has-text-danger" v-if="errors.file_no">{{ errors.file_no[0] }}</small> -->
                                     </v-flex>
                                     <v-flex xs12 sm6>
-                                        <v-text-field v-model="form.policy_no" :rules="rules.name" color="blue darken-2" label="Policy Number" required>
+                                        <v-text-field v-model="form.policy_no" color="blue darken-2" label="Policy Number" required>
                                         </v-text-field>
                                         <!-- <small class="has-text-danger" v-if="errors.policy_no">{{ errors.policy_no[0] }}</small> -->
+                                    </v-flex>
+                                    <v-flex xs12 sm6>
+                                        <v-text-field v-model="form.insured" color="blue darken-2" label="Insured" required>
+                                        </v-text-field>
+                                        <!-- <small class="has-text-danger" v-if="errors.insured">{{ errors.insured[0] }}</small> -->
+                                    </v-flex>
+                                    <v-flex xs12 sm6>
+                                        <v-text-field v-model="commission" disabled color="blue darken-2" label="Commission" required>
+                                        </v-text-field>
+                                        <!-- <small class="has-text-danger" v-if="errors.commission">{{ errors.commission[0] }}</small> -->
                                     </v-flex>
                                     <v-flex xs12 sm6>
                                         <v-text-field v-model="form.premium" color="blue darken-2" label="Premium" required>
                                         </v-text-field>
                                         <!-- <small class="has-text-danger" v-if="errors.premium">{{ errors.premium[0] }}</small> -->
-                                    </v-flex>
-                                    <v-flex xs12 sm6>
-                                        <v-text-field v-model="form.commission " :rules="rules.name" color="blue darken-2" label="commission" required>
-                                        </v-text-field>
-                                        <!-- <small class="has-text-danger" v-if="errors.commission">{{ errors.commission[0] }}</small> -->
                                     </v-flex>
                                     <v-flex xs12 sm6>
                                         <v-text-field v-model="form.effective_date" type="date" color="blue darken-2" label="Effective Date" required>
@@ -42,27 +47,39 @@
                                         <!-- <small class="has-text-danger" v-if="errors.commission">{{ errors.commission[0] }}</small> -->
                                     </v-flex>
                                     <v-flex xs12 sm6>
-                                        <el-select v-model="form.InsClass_id" filterable clearable placeholder="Insurance Class">
-                                            <el-option v-for="item in InsClass" :key="item.id" :label="item.title" :value="item.id">
+                                        <el-select @change="getClass" v-model="form.InsClass_id" filterable clearable placeholder="Insurance Class">
+                                            <el-option v-for="item in InsClass" :key="item.id" :label="item.code" :value="item.id">
                                             </el-option>
                                         </el-select>
                                     </v-flex>
                                     <v-flex xs12 sm6>
 
                                         <el-select v-model="form.InsType_id" filterable clearable placeholder="Insurance Type">
-                                            <el-option v-for="item in InsType" :key="item.id" :label="item.title" :value="item.id">
+                                            <el-option v-for="item in InsType" :key="item.id" :label="item.code" :value="item.id">
                                             </el-option>
                                         </el-select>
                                     </v-flex>
                                     <v-flex xs12 sm6>
                                         <el-select v-model="form.policy_status_id" filterable clearable placeholder="Policy Status">
-                                            <el-option v-for="item in PolicyStatus" :key="item.id" :label="item.title" :value="item.id">
+                                            <el-option v-for="item in PolicyStatus" :key="item.id" :label="item.code" :value="item.id">
                                             </el-option>
                                         </el-select>
                                     </v-flex>
                                     <v-flex xs12 sm6>
                                         <el-select v-model="form.client_id" filterable clearable placeholder="Client">
                                             <el-option v-for="item in clients" :key="item.id" :label="item.name" :value="item.id">
+                                            </el-option>
+                                        </el-select>
+                                    </v-flex>
+                                    <v-flex xs12 sm6>
+                                        <el-select v-model="form.coverage" filterable clearable placeholder="Coverage">
+                                            <el-option v-for="item in coverage" :key="item.id" :label="item.code" :value="item.id">
+                                            </el-option>
+                                        </el-select>
+                                    </v-flex>
+                                    <v-flex xs12 sm6>
+                                        <el-select v-model="form.company" filterable clearable placeholder="Underwritter">
+                                            <el-option v-for="item in company" :key="item.id" :label="item.company_name" :value="item.id">
                                             </el-option>
                                         </el-select>
                                     </v-flex>
@@ -85,16 +102,22 @@
 
 <script>
 export default {
-    props: ['openAddRequest', 'clients'],
+    props: ['openAddRequest', 'clients', 'coverage', 'company', 'file_no'],
     data() {
         const defaultForm = Object.freeze({
-            file_no: '',
-            commission: '',
-            premium: '',
-            policy_no: '',
-            effective_date: '',
-            exp_date: '',
-            client: '',
+            InsClass_id: '',
+            InsType_id: '',
+            client_id: '',
+            commission_rate: '',
+            company: '',
+            coverage: '',
+            effective_date: "",
+            exp_date: "",
+            file_no: "",
+            insured: "",
+            policy_no: "",
+            policy_status_id: '',
+            premium: "",
         })
         return {
             selectClass: [],
@@ -110,11 +133,14 @@ export default {
             rules: {
                 name: [val => (val || '').length > 0 || 'This field is required']
             },
+            comm: null
         }
     },
     methods: {
         save() {
             this.loading = true
+            this.form.commission_rate = this.commission
+            this.form.file_no = this.file_no
             axios.post('/policy', this.$data.form).
             then((response) => {
                     // this.resetForm();
@@ -140,6 +166,24 @@ export default {
         close() {
             this.$emit('closeRequest')
         },
+        getClass() {
+            axios.get(`/insuraceclass/${this.form.InsClass_id}`).
+            then((response) => {
+                    // console.log('success');/
+
+                    // console.log(response.data.commission_rate);
+                    this.comm = response.data.commission_rate
+                    this.commission();
+
+                })
+                .catch((error) => {
+                    // this.errors = error.response.data.errors
+                    // console.log(error.response.data.errors);
+                    // console.log('error');/
+
+                })
+        },
+
     },
     computed: {
         formIsValid() {
@@ -152,6 +196,13 @@ export default {
                 this.form.policy_no
             )
         },
+        commission() {
+            // alert('commiss')
+            console.log(parseInt(this.form.premium));
+            console.log(parseInt(this.comm));
+
+            return this.form.commission_rate = (this.form.premium) * ((this.comm) / 100)
+        }
     },
     mounted() {
         axios.get('/getinsuranceType')
@@ -168,6 +219,6 @@ export default {
             .then((response) => {
                 this.PolicyStatus = response.data
             })
-    }
+    },
 }
 </script>

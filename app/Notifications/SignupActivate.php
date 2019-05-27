@@ -6,19 +6,21 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use App\User;
 
 class SignupActivate extends Notification implements ShouldQueue
 {
     use Queueable;
-
+    protected $password, $user;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(User $user, $password)
     {
-        //
+        $this->password = $password;
+        $this->user = $user;
     }
 
     /**
@@ -40,13 +42,15 @@ class SignupActivate extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        $url = url('/api/auth/signup/activate/'.$notifiable->activation_token);
+        // var_dump($password); die;
+        $url = url('/signup/activate/' . $notifiable->verifyToken);
+        // $url = url('/api/auth/signup/activate/'.$notifiable->activation_token);
 
         return (new MailMessage)
-                    ->subject('Confirm your account')
-                    ->line('Thanks for signup! Please before you begin, you must confirm your account.')
-                    ->action('Confirm Account', url($url))
-                    ->line('Thank you for using our application!');
+            ->subject('Confirm your account')
+            ->line('You have been added to the  WILLOW INSURANCE AGENCY MANAGEMENT SYSTEM! Before you begin, you must confirm your account. Login with your email and this password:' . $this->password)
+            ->action('Confirm Account', url($url))
+            ->line('Thank you for using our application!');
     }
 
     /**

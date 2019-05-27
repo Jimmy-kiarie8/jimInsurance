@@ -8,11 +8,25 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Notifications\SignupActivate;
 
-class UserController extends Controller {
-	public function getUsers() {
-		return User::with(['roles'])->get();
-		// return User::with(['roles'])->where('branch_id', Auth::user()->branch_id)->get();
+class UserController extends Controller
+{
+	public function getUsers()
+	{
+		// return User::all();
+		// return User::where('company_id', Auth::user()->company_id)->get();
+		$users = User::orderBy('name')->get();
+		// $users->transform(function ($user, $key) {
+		//     $branch_name = Branch::find($user->company_id);
+		//     $country_name = Country::find($user->country_id);
+		//     $user->branch = $branch_name->branch_name;
+		//     $user->country = $country_name->country_name;
+		//     $user->status = 'active';
+		//     return $user;
+		// });
+		// return $users;
+		return response()->json($users);
 	}
 	/**
 	 * Store a newly created resource in storage.
@@ -20,32 +34,37 @@ class UserController extends Controller {
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return \Illuminate\Http\Response
 	 */
-	public function store(UsersRequest $request) {
+	public function store(Request $request)
+	{
 		// return $request->all();
 		// var_dump($request->form); die;
 		$user = new User;
-		$password = Hash::make($request->password);
+        $password = $this->generateRandomString();
+        $password_hash = Hash::make($password);
+        $user->password = $password_hash;
 		$user->name = $request->name;
 		$user->password = $password;
 		$user->email = $request->email;
 		$user->phone = $request->phone;
-		$user->branch_id = $request->branch_id;
+		$user->company_id = Auth::user()->company_id;
 		$user->address = $request->address;
-
-		if ($user->save()) {
-			$user_role = new Role_user;
-			$user_role->user_id = $user->id;
-			$user_role->role_id = $request->role_id;
-			$user_role->save();
-
-			// $user_branch = new Branch_user;
-			// $user_branch->user_id = $user->id;
-			// $user_branch->branch_id = $request->branch_id;
-			// $user_branch->save();
-		}
+		$user->verifyToken = str_random(60);
+		$user->save();
+		$user->assignRole($request->role_id);
+        $user->notify(new SignupActivate($user, $password));
 		return $user;
 	}
 
+    public function generateRandomString($length = 10)
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
 	/**
 	 * Update the specified resource in storage.
 	 *
@@ -53,38 +72,19 @@ class UserController extends Controller {
 	 * @param  \App\User  $user
 	 * @return \Illuminate\Http\Response
 	 */
-	public function update(Request $request, User $user) {
+	public function update(Request $request, User $user)
+	{
 		// return $request->all();
 		$user = User::find($request->id);
 		$user->name = $request->name;
 		$user->email = $request->email;
 		$user->phone = $request->phone;
-		$user->branch_id = Auth::user()->branch_id;
+		$user->company_id = Auth::user()->company_id;
 		$user->address = $request->address;
-		if ($user->save()) {
-			if (!$request->role_id) {
-				return $user;
-			}else{
-				$user_role = Role_user::where('user_id', $request->id)->get();
-				$user_id = $user->id;
-				$role_id = $request->role_id;
-				$user_role = Role_user::updateOrCreate(
-					['user_id' => $user_id],
-					['user_id' => $user_id, 'role_id' => $role_id]
-				);
-			}
-			// $user_role->save();
 
-			// $user_branch = Branch_user::where('user_id', $request->id)->get();
-			// $user_id = $user->id;
-			// $branch_id = $request->branch_id;
-			// $user_branch = Branch_user::updateOrCreate(
-			// 	['user_id' => $user_id],
-			// 	['user_id' => $user_id, 'branch_id' => $branch_id]
-			// );
-		}
-		// $user->save();
-		// return $user;
+		$user->save();
+		$user->assignRole($request->role_id);
+		return $user;
 	}
 
 	/**
@@ -93,15 +93,18 @@ class UserController extends Controller {
 	 * @param  \App\User  $user
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy(User $user) {
+	public function destroy(User $user)
+	{
 		User::find($user->id)->delete();
 	}
 
-	public function getLogedinUsers() {
+	public function getLogedinUsers()
+	{
 		return Auth::user();
 	}
 
-	public function profile(Request $request, User $user, $id) {
+	public function profile(Request $request, User $user, $id)
+	{
 		// return $request->all;
 		$upload = User::find($request->id);
 		if ($request->hasFile('image')) {
@@ -116,13 +119,13 @@ class UserController extends Controller {
 
 	public function getDrivers()
 	{
-		$users = User::with('roles')->get();
+		$users = User::all();
 		$userArr = [];
 		foreach ($users as $user) {
-				// var_dump($user->roles); die;
+			// var_dump($user->roles); die;
 			foreach ($user->roles as $role) {
 				if ($role->name == 'Driver') {
-					$userArr[] = $role->pivot->user_id;		
+					$userArr[] = $role->pivot->user_id;
 				}
 			}
 		}
@@ -132,12 +135,12 @@ class UserController extends Controller {
 
 	public function getCustomer()
 	{
-		$users = User::with('roles')->get();
+		$users = User::all();
 		$userArr = [];
 		foreach ($users as $user) {
 			foreach ($user->roles as $role) {
 				if ($role->name == 'Customer') {
-					$userArr[] = $role->pivot->user_id;		
+					$userArr[] = $role->pivot->user_id;
 				}
 			}
 		}
@@ -152,7 +155,7 @@ class UserController extends Controller {
 		$users_id = [];
 		if ($request->abbr == 'all') {
 			return $roles;
-		}else{
+		} else {
 			foreach ($roles as $role) {
 				foreach ($role->roles as $user_role) {
 					if ($user_role->pivot->role_id == $request->abbr) {
@@ -164,5 +167,15 @@ class UserController extends Controller {
 		return User::whereIn('id', $users_id)->get();
 		// return $users_id;
 		// return User::where()->get();
+	}
+	public function logoutOther()
+	{
+		return view('auth.Logout');
+	}
+
+	public function logOtherDevices(Request $request)
+	{
+		Auth::logoutOtherDevices($request->password);
+		return redirect('/');
 	}
 }

@@ -405,9 +405,11 @@ export default {
         },
 
         getUsers() {
+            this.loading = true
             axios.get('getUsers')
 
                 .then((response) => {
+
                     this.Allusers = this.temp = response.data
 
                     this.loading = false

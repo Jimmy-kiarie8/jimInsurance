@@ -3,8 +3,9 @@
     <v-dialog v-model="openShowRequest" persistent max-width="700px">
         <v-card>
             <v-card-title fixed>
-                <span class="headline">{{list.name}}' Details</span>
+                <span class="headline" style="margin: auto;">{{ showData.name}}'s Details</span>
             </v-card-title>
+            <v-divider></v-divider>
             <v-card-text>
                 <v-container grid-list-md>
                     <div class="col-md-12 col-sm-12">

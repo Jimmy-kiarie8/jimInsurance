@@ -4,7 +4,6 @@
         <!-- <v-btn slot="activator" color="primary" dark>Open Dialog</v-btn> -->
         <v-card>
             <v-divider></v-divider>
-            <h6 class="text-center" color="green">Admin</h6>
             <v-btn color="red" darken-1 raised @click="onPickFile" style="color: #fff;">Upload</v-btn>
             <input type="file" @change="Getimage" accept="image/*" style="display: none" ref="fileInput">
             <img v-show="imagePlaced" :src="avatar" style="width: 200px; height: 200px;">

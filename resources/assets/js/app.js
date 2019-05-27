@@ -8,6 +8,7 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+window.eventBus = new Vue()
 import Vuex from 'vuex'
 import VueRouter from 'vue-router'
 import Vuetify from 'vuetify'
@@ -19,7 +20,7 @@ import 'vuetify/dist/vuetify.min.css'
 
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-import printer from "vue-printer";
+// import printer from "vue-printer";
 import JsonExcel from 'vue-json-excel'
 // import test from "vue-test";
 /**
@@ -36,31 +37,42 @@ Vue.use(ElementUI);
 
 // Vue.component('example-component', require('./components/ExampleComponent.vue'));
 
-let dashboard = require('./components/Dashboard.vue');
+// import dashboard from'./components/Dashboard.vue';
+import myHeader from'./components/include/Header.vue';
+import myUser from'./components/master/users/User.vue';
+import myFooter from'./components/include/Footer';
+import mysubsicriber from'./components/emails/Subscribe.vue';
+import myProfile from'./components/users/Profile.vue';
+import myRoles from'./components/users/roles/Roles.vue';
+import myPolicy from'./components/Policy/Policy.vue';
+// import myCertificate from'./components/certificate/Certificate.vue';
+import myReports from'./components/reports/Reports.vue';
+import myCompany from'./components/company/Company.vue';
+import myClient from'./components/clients/Client.vue';
+import myClasses from'./components/master/insclass';
+import myType from'./components/master/instype';
+import myinsPolicy from'./components/master/policy/Policy.vue';
+import myCoverage from'./components/master/coverage';
+import mycompanyProfile from'./components/master/company/Company.vue';
 
-let myHeader = require('./components/include/Header.vue');
-let myUser = require('./components/users/User.vue');
-let myBranch = require('./components/branches/Branch.vue');
-let mysubsicriber = require('./components/emails/Subscribe.vue');
-let myProfile = require('./components/users/Profile.vue');
-let myRoles = require('./components/users/roles/Roles.vue');
-let myPolicy = require('./components/Policy/Policy.vue');
-let myCertificate = require('./components/certificate/Certificate.vue');
-let myReports = require('./components/reports/Reports.vue');
-let myCompany = require('./components/company/Company.vue');
-let myClient = require('./components/clients/Client.vue');
 
 const routes = [
-    {path: '/', component: dashboard },
+    // {path: '/', component: dashboard },
     {path: '/users', component: myUser },
-    {path: '/branches', component: myBranch },
+    {path: '/roles', component: myRoles },
     {path: '/profile', component: myProfile },
-    {path: '/subscribers', component: mysubsicriber },
-    {path: '/policy', component: myPolicy },
-    {path: '/certificates', component: myCertificate },
+    // {path: '/subscribers', component: mysubsicriber },
+    {path: '/', component: myPolicy },
+    // {path: '/certificates', component: myCertificate },
     {path: '/reports', component: myReports },
     {path: '/company', component: myCompany },
     {path: '/clients', component: myClient },
+    {path: '/classes', component: myClasses },
+    {path: '/types', component: myType },
+    {path: '/inspolicy', component: myinsPolicy },
+    {path: '/coverage', component: myCoverage },
+    {path: '/companyprofile', component: mycompanyProfile },
+
 ]
 
 
@@ -72,8 +84,9 @@ const router = new VueRouter({
 const app = new Vue({
     el: '#app',
     components: {
-        myHeader, myUser, mysubsicriber, myProfile, dashboard, myBranch, myPolicy, myCertificate, printer,
-        myReports, myCompany, myClient
+        myHeader, myUser, mysubsicriber, myProfile, myPolicy, 
+        myReports, myCompany, myClient, myClasses, myType, myinsPolicy,
+         myCoverage, myRoles, mycompanyProfile, myFooter,
     },
     router,
 });

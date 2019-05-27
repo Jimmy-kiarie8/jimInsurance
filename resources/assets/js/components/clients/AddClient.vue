@@ -12,7 +12,7 @@
                             <v-container grid-list-xl fluid>
                                 <v-layout wrap>
                                     <v-flex xs12 sm6>
-                                        <v-text-field v-model="form.client_no" color="blue darken-2" label="Client Number" required></v-text-field>
+                                        <v-text-field v-model="client_no" disabled color="blue darken-2" label="Client Number" required></v-text-field>
                                         <!-- <small class="has-text-danger" v-if="errors.client_no">{{ errors.client_no[0] }}</small> -->
                                     </v-flex>
                                     <v-flex xs12 sm6>
@@ -34,6 +34,12 @@
                                     <v-flex xs12 sm6>
                                         <v-text-field v-model="form.phone" :rules="rules.name" color="blue darken-2" label="Phone" required></v-text-field>
                                         <!-- <small class="has-text-danger" v-if="errors.phone">{{ errors.phone[0] }}</small> -->
+                                    </v-flex>
+                                    <v-flex xs12 sm6>
+                                        <el-select v-model="form.company_id" filterable clearable placeholder="Company">
+                                            <el-option v-for="item in company" :key="item.id" :label="item.company_name" :value="item.id">
+                                            </el-option>
+                                        </el-select>
                                     </v-flex>
                                 </v-layout>
                             </v-container>
@@ -57,13 +63,13 @@
 
 <script>
 export default {
-    props: ['openAddRequest', 'AllBranches'],
+    props: ['openAddRequest', 'company', 'client_no'],
     data() {
         const defaultForm = Object.freeze({
             name: '',
             email: '',
             phone: null,
-            branch: '',
+            company_id: '',
             address: '',
         })
         return {
@@ -85,6 +91,7 @@ export default {
     },
     methods: {
         save() {
+            this.form.client_no = this.client_no
             this.loading = true
             axios.post('/clients', this.$data.form).
             then((response) => {

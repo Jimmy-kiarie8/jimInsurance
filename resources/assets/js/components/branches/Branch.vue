@@ -64,13 +64,17 @@
                         Branchs
                         <v-btn color="primary" flat @click="openAdd">Add A Branch</v-btn>
                         
-                        <v-btn icon class="mx-0" @click="getBranch()">
-                            <v-icon color="blue darken-2">refresh</v-icon>
-                        </v-btn>
+                        <v-tooltip right>
+                            <v-btn icon slot="activator" class="mx-0" @click="getBranch">
+                                <v-icon color="blue darken-2" small>refresh</v-icon>
+                            </v-btn>
+                            <span>Refresh</span>
+                        </v-tooltip>
                         <v-spacer></v-spacer>
                         <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
                     </v-card-title>
-                    <v-data-table :headers="headers" :items="AllBranches" :search="search" counter class="elevation-1">
+                    <v-data-table :loading="loading" :headers="headers" :items="AllBranches" :search="search" counter class="elevation-1">
+                        <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
                         <template slot="items" slot-scope="props">
                             <td>{{ props.item.branch_name }} </td>
                             <td class="text-xs-right">{{ props.item.phone }}</td>
@@ -123,6 +127,7 @@ export default {
             color: 'black',
             y: 'bottom',
             x: 'left',
+            loading: false,
             dialog: false,
             headers: [{
                     text: 'Branch Name',
@@ -227,14 +232,17 @@ export default {
             this.$refs.form.reset()
         },
         getBranch() {
+            this.loading = true
             axios.get('getBranch')
             .then((response) => {
+                    this.loading = false
                 this.AllBranches = response.data
                 this.loader = false
             })
             .catch((error) => {
-                this.errors = error.response.data.errors
+                    this.loading = false
                 this.loader = false
+                this.errors = error.response.data.errors
             })
         }
     },
