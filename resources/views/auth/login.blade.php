@@ -8,9 +8,9 @@
                 <div class="card-header" id="socialite">
                     <v-card flat tile class="flex">
                         <v-card-title class="grey lighten-2">
-                           <strong class="subheading">Login with!</strong>
+                           <strong class="subheading">Login!</strong>
                            <v-spacer></v-spacer>
-                           <a href="/login/facebook">
+                           {{-- <a href="/login/facebook">
                             <v-btn
                             icon
                             dark
@@ -27,7 +27,7 @@
                                     >
                                 <v-icon size="24px">fa fa-google</v-icon>
                                 </v-btn>
-                            </a>
+                            </a> --}}
                         </v-card-title>
                     </v-card>
                 </div>

@@ -33,7 +33,7 @@ Route::get('signup/activate/{token}', 'AuthController@signupActivate');
 Auth::routes();
 
 Route::group(['middleware' => ['auth']], function () {
-	
+
 	Route::get('/logoutOther', 'UserController@logoutOther')->name('logoutOther');
 	Route::post('/logOtherDevices', 'UserController@logOtherDevices')->name('logOtherDevices');
 	// Route::get('/insurance/{name}', function () {

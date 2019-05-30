@@ -105,7 +105,7 @@ class AuthController extends Controller
             ], 404);
         }
         // $user->active = true;
-        $user->verifyToken = '';
+        $user->verifyToken = null;
         $user->save();
         // return $user;
         return redirect('/login');

@@ -1,6 +1,6 @@
 <template>
 <v-content>
-    <v-container fluid fill-height v-show="!loader">
+    <v-container fluid fill-height>
         <v-layout justify-center align-center>
             <v-footer dark height="auto" style="position: fixed;">
                 <v-card class="flex" flat tile>

@@ -15,17 +15,17 @@
                         <v-form ref="form" @submit.prevent="submit">
                             <v-container grid-list-xl fluid>
                                 <v-layout wrap>
-                                     <v-flex xs12 sm2>
+                                     <v-flex xs12 sm12>
                                         <v-text-field v-model="coverage.title" color="blue darken-2" label="Title" required></v-text-field>
                                         <!-- <small coverage="has-text-danger" v-if="errors.title">{{ errors.title[0] }}</small> -->
                                     </v-flex>
-                                    <v-flex xs12 sm12>
+                                    <!-- <v-flex xs12 sm12>
                                         <v-textarea v-model="coverage.description" color="blue">
                                             <div slot="label">
                                                 Display content
                                             </div>
                                         </v-textarea>
-                                    </v-flex>
+                                    </v-flex> -->
                                 </v-layout>
                             </v-container>
                             <v-card-actions>

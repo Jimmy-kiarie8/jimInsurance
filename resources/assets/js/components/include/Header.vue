@@ -80,7 +80,7 @@
                                 <div class="v-list__tile__action"><i aria-hidden="true" style="color: rgb(28, 35, 79)" class="icon material-icons">business</i></div>
                                 <div class="v-list__tile__content">
                                     <div class="v-list__tile__title">
-                                        Company
+                                        Insurance Company
                                     </div>
                                 </div>
                             </router-link>
@@ -90,7 +90,7 @@
                                 </v-list-tile-action>
                                 <v-list-tile-title>Insurance classes </v-list-tile-title>
                             </router-link>
-                            <router-link to="/inspolicy" class="v-list__tile theme--light" style="text-decoration: none">
+                            <!-- <router-link to="/inspolicy" class="v-list__tile theme--light" style="text-decoration: none">
                                 <v-list-tile-action>
                                     <v-icon>book</v-icon>
                                 </v-list-tile-action>
@@ -107,7 +107,7 @@
                                     <v-icon>gavel</v-icon>
                                 </v-list-tile-action>
                                 <v-list-tile-title>Policy coverage </v-list-tile-title>
-                            </router-link>
+                            </router-link> -->
                             <router-link to="/users" class="v-list__tile v-list__tile--link">
                                 <div class="v-list__tile__action"><i aria-hidden="true" style="color: rgb(28, 35, 79)" class="icon material-icons">account_circle</i></div>
                                 <div class="v-list__tile__content">

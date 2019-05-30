@@ -19,13 +19,13 @@
                                         <v-text-field v-model="form.code" color="purple darken-2" label="Code" required></v-text-field>
                                         <small class="has-text-danger" v-if="errors.code">{{ errors.code[0] }}</small>
                                     </v-flex>
-                                    <v-flex xs12 sm12>
+                                    <!-- <v-flex xs12 sm12>
                                         <v-textarea v-model="form.description" color="blue">
                                             <div slot="label">
                                                 Display content
                                             </div>
                                         </v-textarea>
-                                    </v-flex>
+                                    </v-flex> -->
                                 </v-layout>
                             </v-container>
                             <v-card-actions>
@@ -50,10 +50,10 @@
 export default {
   data() {
     const defaultForm = Object.freeze({
-      title: "",
-      commission_rate: "",
-      description: "",
-      coverage: ""
+      code: "",
+      // commission_rate: "",
+      // description: "",
+      // coverage: ""
     });
     return {
       loading: false,

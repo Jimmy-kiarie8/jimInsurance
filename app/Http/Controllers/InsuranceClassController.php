@@ -29,9 +29,9 @@ class InsuranceClassController extends Controller
         $insurance = new InsuranceClass;
         $insurance->user_id = Auth::id();
         $insurance->code = $request->code;
-        $insurance->commission_rate = $request->commission_rate;
-        $insurance->coverage = $request->coverage;
-        $insurance->description = $request->description;
+        // $insurance->commission_rate = $request->commission_rate;
+        // $insurance->coverage = $request->coverage;
+        // $insurance->description = $request->description;
         $insurance->save();
         return $insurance;
     }
@@ -60,8 +60,8 @@ class InsuranceClassController extends Controller
         // $insurance->title = $request->title;
         $insurance->description = $request->description;
         $insurance->code = $request->code;
-        $insurance->commission_rate = $request->commission_rate;
-        $insurance->coverage = $request->coverage;
+        // $insurance->commission_rate = $request->commission_rate;
+        // $insurance->coverage = $request->coverage;
         $insurance->save();
         return $insurance;
     }

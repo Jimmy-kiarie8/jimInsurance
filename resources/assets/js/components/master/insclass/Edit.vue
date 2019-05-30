@@ -1,6 +1,6 @@
 <template>
 <v-layout row justify-center>
-    <v-dialog v-model="dialog" persistent max-width="700px">
+    <v-dialog v-model="dialog" persistent max-width="500px">
         <v-card>
             <v-card-title fixed>
                 <span class="headline">Add Code</span>
@@ -15,21 +15,17 @@
                         <v-form ref="form" @submit.prevent="submit">
                             <v-container grid-list-xl fluid>
                                 <v-layout wrap>
-                                    <v-flex xs12 sm6>
+                                    <v-flex xs12 sm12>
                                         <v-text-field v-model="allClasses.code" color="purple darken-2" label="Code" required></v-text-field>
-                                        <!-- <small class="has-text-danger" v-if="errors.code">{{ errors.code[0] }}</small> -->
                                     </v-flex>
-                                     <v-flex xs12 sm6>
+                                     <!-- <v-flex xs12 sm6>
                                         <v-text-field v-model="allClasses.title" color="purple darken-2" label="Title" required></v-text-field>
-                                        <!-- <small class="has-text-danger" v-if="errors.title">{{ errors.title[0] }}</small> -->
                                     </v-flex>
                                     <v-flex xs12 sm6>
                                         <v-text-field v-model="allClasses.commission_rate" color="blue darken-2" label="Commission Rate" required></v-text-field>
-                                        <!-- <small class="has-text-danger" v-if="errors.commission_rate">{{ errors.commission_rate[0] }}</small> -->
                                     </v-flex>
                                     <v-flex xs12 sm6>
                                         <v-text-field v-model="allClasses.coverage" color="blue darken-2" label="Coverage" required></v-text-field>
-                                        <!-- <small class="has-text-danger" v-if="errors.coverage">{{ errors.coverage[0] }}</small> -->
                                     </v-flex>
                                     <v-flex xs12 sm12>
                                         <v-textarea v-model="allClasses.description" color="blue">
@@ -37,7 +33,7 @@
                                                 Display content
                                             </div>
                                         </v-textarea>
-                                    </v-flex>
+                                    </v-flex> -->
                                 </v-layout>
                             </v-container>
                             <v-card-actions>

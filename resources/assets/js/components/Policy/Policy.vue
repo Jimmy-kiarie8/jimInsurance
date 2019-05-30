@@ -23,8 +23,10 @@
                     <v-data-table :loading="loading" :headers="headers" :items="AllPolicies" :search="search" counter class="elevation-1">
                         <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
                         <template slot="items" slot-scope="props">
-                            <td>{{ props.item.file_no }} </td>
-                            <td class="text-xs-right">{{ props.item.policy_no }}</td>
+                            <!-- <td>{{ props.item.file_no }} </td>   -->
+                            <td>{{ props.item.policy_no }}</td>
+                            <td class="text-xs-right">{{ props.item.client_name }}</td>
+                            <td class="text-xs-right">{{ props.item.client_phone }}</td>
                             <td class="text-xs-right">{{ props.item.premium }}</td>
                             <td class="text-xs-right">{{ props.item.effective_date }}</td>
                             <td class="text-xs-right">{{ props.item.exp_date }}</td>
@@ -32,7 +34,7 @@
                                 <v-btn icon class="mx-0" @click="editItem(props.item)">
                                     <v-icon color="blue darken-2" small>edit</v-icon>
                                 </v-btn>
-                                <!-- <v-btn icon class="mx-0" @click="printItem(props.item)">
+                                <!-- <v-btn icon class="mx-0" @click="printItem(props.item)"> 
                                     <v-icon color="indigo darken-2" small>print</v-icon>
                                 </v-btn> -->
                                 <v-btn icon class="mx-0" @click="deleteItem(props.item)">
@@ -86,14 +88,23 @@ export default {
             message: 'Success',
             color: 'black',
             dialog: false,
-            headers: [{
-                    text: 'File Number',
-                    align: 'left',
-                    value: 'file_no'
-                },
+            headers: [
+                // {
+                //     text: 'File Number',
+                //     align: 'left',
+                //     value: 'file_no'
+                // },
                 {
                     text: 'Policy Number',
                     value: 'policy_no'
+                },
+                {
+                    text: 'Client Name',
+                    value: 'client_name'
+                },
+                {
+                    text: 'Client Phone',
+                    value: 'client_name'
                 },
                 {
                     text: 'Premium',
@@ -149,8 +160,26 @@ export default {
         },
 
         deleteItem(item) {
-            const index = this.AllPolicies.indexOf(item)
-            confirm('Are you sure you want to delete this Policy?') && this.AllPolicies.splice(index, 1)
+            if (confirm("Are you sure you want to delete this Client?")) {
+                this.loading = true;
+                axios
+                    .delete(`/policy/${item.id}`)
+                    .then(response => {
+                        // this.AllPolicies.splice(index, 1);
+                        this.loading = false;
+                        this.message = "deleted successifully";
+                        this.color = "red";
+                        this.snackbar = true;
+                        this.getPolicy()
+                    })
+                    .catch(error => {
+                        this.loading = false;
+                        this.message = "something went wrong";
+                        this.color = "red";
+                        this.snackbar = true;
+                        this.errors = error.response.data.errors;
+                    });
+            }
         },
 
         alert() {

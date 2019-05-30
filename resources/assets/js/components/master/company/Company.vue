@@ -38,9 +38,9 @@
                                 <v-btn icon class="mx-0" @click="editItem(props.item)">
                                     <v-icon color="blue darken-2">edit</v-icon>
                                 </v-btn>
-                                <v-btn icon class="mx-0" @click="imageUpload(props.item)">
+                                <!-- <v-btn icon class="mx-0" @click="imageUpload(props.item)">
                                     <v-icon color="blue darken-2">image</v-icon>
-                                </v-btn>
+                                </v-btn> -->
                                 <v-btn icon class="mx-0" @click="deleteItem(props.item)">
                                     <v-icon color="pink darken-2">delete</v-icon>
                                 </v-btn>

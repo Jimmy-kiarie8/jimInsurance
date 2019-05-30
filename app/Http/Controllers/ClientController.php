@@ -10,7 +10,12 @@ class ClientController extends Controller
 {
     public function index()
     {
-        return Client::all();
+        $clients = Client::all();
+        $clients->transform(function ($client) {
+            $client->birth_day = date('d-M-Y', strtotime($client->birth_day));
+            return $client;
+        });
+        return $clients;
     }
     /**
      * Store a newly created resource in storage.
@@ -41,7 +46,7 @@ class ClientController extends Controller
      * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Client $client)
+    public function update(Request $request, $id)
     {
         // return $request->all();
         $client = Client::find($request->id);
@@ -61,14 +66,19 @@ class ClientController extends Controller
      * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Client $client)
+    public function destroy($id)
     {
-        //
+        Client::findOrFail($id)->delete();
     }
 
     public function getClients()
     {
-        return Client::all();
+        $clients = Client::all();
+        $clients->transform(function ($client) {
+            $client->birth_day = date('d-M-Y', strtotime($client->birth_day));
+            return $client;
+        });
+        return $clients;
     }
 
     public function client_no()

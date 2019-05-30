@@ -11,11 +11,10 @@
                         <v-form ref="form" @submit.prevent="submit">
                             <v-container grid-list-xl fluid>
                                 <v-layout wrap>
-                                    <v-flex xs12 sm6>
+                                    <!-- <v-flex xs12 sm6>
                                         <v-text-field v-model="Editdata.file_no" :rules="rules.name" color="blue darken-2" label="Branch name" required>
                                         </v-text-field>
-                                        <!-- <small class="has-text-danger" v-if="errors.file_no">{{ errors.file_no[0] }}</small> -->
-                                    </v-flex>
+                                    </v-flex> -->
                                     <v-flex xs12 sm6>
                                         <v-text-field v-model="Editdata.policy_no" :rules="rules.name" color="blue darken-2" label="Branch policy_no" required>
                                         </v-text-field>
@@ -25,11 +24,6 @@
                                         <v-text-field v-model="Editdata.premium" color="blue darken-2" label="Premium" required>
                                         </v-text-field>
                                         <!-- <small class="has-text-danger" v-if="errors.premium">{{ errors.premium[0] }}</small> -->
-                                    </v-flex>
-                                    <v-flex xs12 sm6>
-                                        <v-text-field v-model="Editdata.commission " :rules="rules.name" color="blue darken-2" label="Commission" required>
-                                        </v-text-field>
-                                        <!-- <small class="has-text-danger" v-if="errors.commission">{{ errors.commission[0] }}</small> -->
                                     </v-flex>
                                     <v-flex xs12 sm6>
                                         <v-text-field v-model="Editdata.effective_date" type="date" color="blue darken-2" label="Effective Date" required>
@@ -44,20 +38,6 @@
                                     <v-flex xs12 sm6>
                                         <el-select v-model="Editdata.InsClass_id" filterable clearable placeholder="Insurance Class">
                                             <el-option v-for="item in InsClass" :key="item.id" :label="item.code" :value="item.id">
-                                            </el-option>
-                                        </el-select>
-                                    </v-flex>
-                                    <v-flex xs12 sm6>
-
-                                        <el-select v-model="Editdata.InsType_id" filterable clearable placeholder="Insurance Type">
-                                            <el-option v-for="item in InsType" :key="item.id" :label="item.code" :value="item.id">
-                                            </el-option>
-                                        </el-select>
-                                    </v-flex>
-                                    <v-flex xs12 sm6>
-
-                                        <el-select v-model="Editdata.policy_status_id" filterable clearable placeholder="Policy Status">
-                                            <el-option v-for="item in PolicyStatus" :key="item.id" :label="item.code" :value="item.id">
                                             </el-option>
                                         </el-select>
                                     </v-flex>

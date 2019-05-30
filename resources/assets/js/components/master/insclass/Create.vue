@@ -1,6 +1,6 @@
 <template>
 <v-layout row justify-center>
-    <v-dialog v-model="dialog" persistent max-width="700px" v-if="dialog">
+    <v-dialog v-model="dialog" persistent max-width="400px" v-if="dialog">
         <v-card>
             <v-card-title fixed>
                 <span class="headline">Add Class</span>
@@ -15,11 +15,11 @@
                         <v-form ref="form" @submit.prevent>
                             <v-container grid-list-xl fluid>
                                 <v-layout wrap>
-                                    <v-flex xs12 sm6>
-                                        <v-text-field v-model="form.code" color="blue darken-2" label="Code" required></v-text-field>
+                                    <v-flex xs12 sm12>
+                                        <v-text-field v-model="form.code" color="blue darken-2" label="Insurance Class" required></v-text-field>
                                         <small class="has-text-danger" v-if="errors.code">{{ errors.code[0] }}</small>
                                     </v-flex>
-                                    <v-flex xs12 sm6>
+                                    <!-- <v-flex xs12 sm6>
                                         <v-text-field v-model="form.commission_rate" color="blue darken-2" label="Commission Rate" required></v-text-field>
                                         <small class="has-text-danger" v-if="errors.commission_rate">{{ errors.commission_rate[0] }}</small>
                                     </v-flex>
@@ -33,7 +33,7 @@
                                                 Display content
                                             </div>
                                         </v-textarea>
-                                    </v-flex>
+                                    </v-flex> -->
                                 </v-layout>
                             </v-container>
                             <v-card-actions>
@@ -59,9 +59,9 @@ export default {
     data() {
         const defaultForm = Object.freeze({
             code: "",
-            commission_rate: "",
-            description: "",
-            coverage: ""
+            // commission_rate: "",
+            // description: "",
+            // coverage: ""
         });
         return {
             loading: false,

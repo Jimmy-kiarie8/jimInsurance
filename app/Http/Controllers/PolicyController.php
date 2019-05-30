@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Policy;
 use Illuminate\Http\Request;
 use Auth;
+use App\Company;
+use App\Client;
+use Carbon\Carbon;
 
 class PolicyController extends Controller
 {
@@ -24,14 +27,14 @@ class PolicyController extends Controller
         $policy->effective_date = $request->effective_date;
         $policy->exp_date = $request->exp_date;
         $policy->premium = $request->premium;
-        $policy->coverage = $request->coverage;
+        // $policy->coverage = $request->coverage;
         $policy->insured = $request->insured;
-        $policy->commission_rate = $request->commission_rate;
+        // $policy->commission_rate = $request->commission_rate;
         $policy->company_id = $request->company;
         $policy->client_id = $request->client_id;
-        $policy->InsType_id = $request->InsType_id;
+        // $policy->InsType_id = $request->InsType_id;
         $policy->Insclass_id = $request->InsClass_id;
-        $policy->policy_status_id = $request->policy_status_id;
+        // $policy->policy_status_id = $request->policy_status_id;
         $policy->save();
         return $policy;
     }
@@ -63,12 +66,12 @@ class PolicyController extends Controller
         $policy->effective_date = $request->form['effective_date'];
         $policy->exp_date = $request->form['exp_date'];
         $policy->premium = $request->form['premium'];
-        $policy->commission = $request->form['commission'];
+        // $policy->commission = $request->form['commission'];
         // $policy->client = $request->form['client'];
         $policy->client_id = $request->form['client_id'];
-        $policy->InsType_id = $request->InsType;
+        // $policy->InsType_id = $request->InsType;
         $policy->Insclass_id = $request->Insclass;
-        $policy->policy_status_id = $request->policy;
+        // $policy->policy_status_id = $request->policy;
         $policy->save();
         return $policy;
     }
@@ -81,12 +84,29 @@ class PolicyController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Policy::find($id)->delete();
     }
 
     public function getPolicy()
     {
-        return Policy::all();
+        $policies = Policy::all();
+        $policies->transform(function ($policy) {
+            $client = Client::find($policy->client_id);
+            if ($client) {
+                $policy->client_name = $client->name;
+                $policy->client_phone = $client->phone;
+            }
+            $policy->exp_date = date('d-M-Y', strtotime($policy->exp_date));
+            $policy->effective_date = date('d-M-Y', strtotime($policy->effective_date));
+            $company = Company::find($policy->company_id);
+            if ($company) {
+                $policy->company_name = $company->company_name;
+            }
+            // $policy->effective_date = Carbon::('DD-MM-YY', $policy->created_at);
+
+            return $policy;
+        });
+        return $policies;
     }
 
     public function file_no()

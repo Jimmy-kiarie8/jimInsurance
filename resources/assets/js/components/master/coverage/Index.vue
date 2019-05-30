@@ -27,8 +27,8 @@
                         <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
                         <template slot="items" slot-scope="props">
                             <td>{{ props.item.code }}</td>
-                            <td class="text-xs-right">{{ props.item.description }}</td>
-                            <td class="text-xs-right">{{ props.item.created_at }}</td>
+                            <!-- <td class="text-xs-right">{{ props.item.description }}</td> -->
+                            <!-- <td class="text-xs-right">{{ props.item.created_at }}</td> -->
                             <td class="justify-center layout px-0">
                                 <v-tooltip bottom>
                                     <v-btn icon class="mx-0" @click="openEdit(props.item)" slot="activator">
@@ -88,17 +88,17 @@ export default {
       },
       headers: [
         {
-          text: "Code",
+          text: "Coverage",
           value: "code"
         },
-        {
-          text: "Description",
-          value: "description"
-        },
-        {
-          text: "Created On",
-          value: "created_at"
-        },
+        // {
+        //   text: "Description",
+        //   value: "description"
+        // },
+        // {
+        //   text: "Created On",
+        //   value: "created_at"
+        // },
         {
           text: "Actions",
           value: "name",

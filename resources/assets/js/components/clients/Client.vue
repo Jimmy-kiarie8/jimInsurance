@@ -24,7 +24,7 @@
                             <td class="text-xs-right">{{ props.item.email }}</td>
                             <td class="text-xs-right">{{ props.item.phone }}</td>
                             <td class="text-xs-right">{{ props.item.birth_day }}</td>
-                            <td class="text-xs-right">{{ props.item.created_at }}</td>
+                            <!-- <td class="text-xs-right">{{ props.item.created_at }}</td> -->
                             <td class="justify-center layout px-0">
                                 <v-btn icon class="mx-0" @click="openEdit(props.item)">
                                     <v-icon small color="blue darken-2">edit</v-icon>
@@ -93,10 +93,10 @@ export default {
                     text: "D.O.B",
                     value: "birth_day"
                 },
-                {
-                    text: "Created On",
-                    value: "created_at"
-                },
+                // {
+                //     text: "Created On",
+                //     value: "created_at"
+                // },
                 {
                     text: "Actions",
                     value: "name",
@@ -159,16 +159,17 @@ export default {
                 });
         },
         deleteItem(item) {
-            if (confirm("Are you sure you want to delete this item?")) {
+            if (confirm("Are you sure you want to delete this Client?")) {
                 this.loading = true;
                 axios
-                    .delete(`/users/${id}`)
+                    .delete(`/clients/${item.id}`)
                     .then(response => {
-                        this.AllClients.splice(index, 1);
+                        this.getClients()
                         this.loading = false;
                         this.message = "deleted successifully";
                         this.color = "red";
                         this.snackbar = true;
+                        // this.AllClients.splice(index, 1);
                     })
                     .catch(error => {
                         this.loading = false;

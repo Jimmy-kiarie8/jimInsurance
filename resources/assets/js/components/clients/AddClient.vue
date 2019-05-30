@@ -15,10 +15,10 @@
                                         <v-text-field v-model="client_no" disabled color="blue darken-2" label="Client Number" required></v-text-field>
                                         <!-- <small class="has-text-danger" v-if="errors.client_no">{{ errors.client_no[0] }}</small> -->
                                     </v-flex>
-                                    <v-flex xs12 sm6>
+                                    <!-- <v-flex xs12 sm6>
                                         <v-text-field v-model="form.pin_no" color="blue darken-2" label="Client Pin" required></v-text-field>
-                                        <!-- <small class="has-text-danger" v-if="errors.pin_no">{{ errors.pin_no[0] }}</small> -->
-                                    </v-flex>
+                                        <small class="has-text-danger" v-if="errors.pin_no">{{ errors.pin_no[0] }}</small>
+                                    </v-flex> -->
                                     <v-flex xs12 sm6>
                                         <v-text-field v-model="form.name" :rules="rules.name" color="blue darken-2" label="Full name" required></v-text-field>
                                         <!-- <small class="has-text-danger" v-if="errors.name">{{ errors.name[0] }}</small> -->
