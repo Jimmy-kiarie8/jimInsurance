@@ -43,7 +43,7 @@ class SmsComand extends Command
     public function handle()
     {
         $today = Carbon::today();
-        $sms_date = $today->addDays(7)->toDateString();
+        $sms_date = $today->addDays(14)->toDateString();
         $policies = Policy::all();
         $policies->transform(function ($policy) {
             $policy->exp_date = $policy->exp_date;
@@ -53,7 +53,7 @@ class SmsComand extends Command
             return $policy;
         });
         foreach ($policies as $policy) {
-            if ($sms_date  == $policy->exp_date) {
+            if ($sms_date == $policy->exp_date) {
                 $sms = new Sms;
                 $sms->sms($policy->phone, $policy);
             }

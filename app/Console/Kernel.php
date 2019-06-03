@@ -27,8 +27,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        $schedule->command('test:testcommand')
-        ->everyMinute();
+        // $schedule->command('test:testcommand')
+        // ->everyMinute();
         $schedule->call(function () {
             DB::table('reminders')->insert(
               ['policy_id' => 1, 'client_id' => 9]
