@@ -48,8 +48,8 @@ class SmsComand extends Command
         $policies->transform(function ($policy) {
             $policy->exp_date = $policy->exp_date;
             $client = Client::find($policy->client_id);
-            $policy->name = $client->name;
-            $policy->phone = $client->phone;
+            $policy->name = ($client) ? $client->name : '' ;
+            $policy->phone = ($client) ? $client->phone : '' ;
             return $policy;
         });
         foreach ($policies as $policy) {

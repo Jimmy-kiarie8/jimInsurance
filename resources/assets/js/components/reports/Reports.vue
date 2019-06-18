@@ -28,9 +28,9 @@
                                                 <v-text-field v-model="form.end_date" label="End Date" type="date" color="blue darken-2" required></v-text-field>
                                             </v-flex>
                                             <v-card-actions>
-                                                <v-btn flat color="primary" @click="download">Filter</v-btn>
+                                                <v-btn flat color="primary" @click="download" :loading="loading">Filter</v-btn>
                                                 <v-spacer></v-spacer>
-                                                <v-btn flat>
+                                                <v-btn flat v-if="Report.length > 0">
                                                     <download-excel :data="Report" :fields="premium_fields">
                                                         Export
                                                         <img src="/storage/csv.png" style="width: 30px; height: 30px; cursor: pointer;">
@@ -56,9 +56,9 @@
                                                 <v-text-field v-model="reminder.end_date" label="End Date" type="date" color="blue darken-2" required></v-text-field>
                                             </v-flex>
                                             <v-card-actions>
-                                                <v-btn flat color="primary" @click="reminderReport()">Filter</v-btn>
+                                                <v-btn flat color="primary" @click="reminderReport()" :loading="loading">Filter</v-btn>
                                                 <v-spacer></v-spacer>
-                                                <v-btn flat>
+                                                <v-btn flat v-if="filterreminder.length > 0">
                                                     <download-excel :data="filterreminder" :fields="reminder_fields">
                                                         Export
                                                         <img src="/storage/csv.png" style="width: 30px; height: 30px; cursor: pointer;">
@@ -80,9 +80,9 @@
                                                 <v-text-field v-model="products.end_date" label="End Date" type="date" color="blue darken-2" required></v-text-field>
                                             </v-flex>
                                             <v-card-actions>
-                                                <v-btn flat color="primary" @click="productReport()">Filter</v-btn>
+                                                <v-btn flat color="primary" @click="productReport()" :loading="loading">Filter</v-btn>
                                                 <v-spacer></v-spacer>
-                                                <v-btn flat>
+                                                <v-btn flat v-if="filterproducts.length > 0">
                                                     <download-excel :data="filterproducts" :fields="product_fields">
                                                         Export
                                                         <img src="/storage/csv.png" style="width: 30px; height: 30px; cursor: pointer;">
@@ -100,7 +100,7 @@
         </div>
         <v-snackbar v-model="snackbar" absolute top right :color="color">
             <span>{{ message }}</span>
-            <v-icon dark>{{ check_circle }}</v-icon>
+            <v-icon dark>check_circle</v-icon>
         </v-snackbar>
     </v-container>
 </v-content>

@@ -12,7 +12,7 @@ class ClientController extends Controller
     {
         $clients = Client::all();
         $clients->transform(function ($client) {
-            $client->birth_day = date('d-M-Y', strtotime($client->birth_day));
+            $client->birthDay = date('d-M-Y', strtotime($client->birth_day));
             return $client;
         });
         return $clients;
@@ -75,7 +75,7 @@ class ClientController extends Controller
     {
         $clients = Client::all();
         $clients->transform(function ($client) {
-            $client->birth_day = date('d-M-Y', strtotime($client->birth_day));
+            $client->birthDay = date('d-M-Y', strtotime($client->birth_day));
             return $client;
         });
         return $clients;

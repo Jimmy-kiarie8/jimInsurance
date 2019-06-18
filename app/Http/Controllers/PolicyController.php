@@ -59,16 +59,16 @@ class PolicyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return $request->all();
+        // return $request->all();
         $policy = Policy::find($id);
-        $policy->file_no = $request->form['file_no'];
-        $policy->policy_no = 'policy_' . $request->form['policy_no'];
-        $policy->effective_date = $request->form['effective_date'];
-        $policy->exp_date = $request->form['exp_date'];
-        $policy->premium = $request->form['premium'];
-        // $policy->commission = $request->form['commission'];
-        // $policy->client = $request->form['client'];
-        $policy->client_id = $request->form['client_id'];
+        $policy->file_no = $request->file_no;
+        // $policy->policy_no = 'policy_' . $request->policy_no;
+        $policy->effective_date = $request->effective_date;
+        $policy->exp_date = $request->exp_date;
+        $policy->premium = $request->premium;
+        // $policy->commission = $request->commission;
+        // $policy->client = $request->client;
+        // $policy->client_id = $request->client_id;
         // $policy->InsType_id = $request->InsType;
         $policy->Insclass_id = $request->Insclass;
         // $policy->policy_status_id = $request->policy;
@@ -96,8 +96,8 @@ class PolicyController extends Controller
                 $policy->client_name = $client->name;
                 $policy->client_phone = $client->phone;
             }
-            $policy->exp_date = date('d-M-Y', strtotime($policy->exp_date));
-            $policy->effective_date = date('d-M-Y', strtotime($policy->effective_date));
+            $policy->expDate = date('d-M-Y', strtotime($policy->expDate));
+            $policy->effectiveDate = date('d-M-Y', strtotime($policy->effectiveDate));
             $company = Company::find($policy->company_id);
             if ($company) {
                 $policy->company_name = $company->company_name;

@@ -31,7 +31,7 @@ import JsonExcel from 'vue-json-excel'
 Vue.use(Vuex)
 Vue.use(Vuetify)
 Vue.use(VueRouter)
-Vue.use(Print); 
+Vue.use(Print);
 Vue.component('downloadExcel', JsonExcel)
 Vue.use(ElementUI);
 
@@ -50,9 +50,9 @@ import myReports from'./components/reports/Reports.vue';
 import myCompany from'./components/company/Company.vue';
 import myClient from'./components/clients/Client.vue';
 import myClasses from'./components/master/insclass';
-import myType from'./components/master/instype';
+// import myType from'./components/master/instype';
 import myinsPolicy from'./components/master/policy/Policy.vue';
-import myCoverage from'./components/master/coverage';
+// import myCoverage from'./components/master/coverage';
 import mycompanyProfile from'./components/master/company/Company.vue';
 
 
@@ -68,9 +68,9 @@ const routes = [
     {path: '/company', component: myCompany },
     {path: '/clients', component: myClient },
     {path: '/classes', component: myClasses },
-    {path: '/types', component: myType },
+    // {path: '/types', component: myType },
     {path: '/inspolicy', component: myinsPolicy },
-    {path: '/coverage', component: myCoverage },
+    // {path: '/coverage', component: myCoverage },
     {path: '/companyprofile', component: mycompanyProfile },
 
 ]
@@ -84,9 +84,10 @@ const router = new VueRouter({
 const app = new Vue({
     el: '#app',
     components: {
-        myHeader, myUser, mysubsicriber, myProfile, myPolicy, 
-        myReports, myCompany, myClient, myClasses, myType, myinsPolicy,
-         myCoverage, myRoles, mycompanyProfile, myFooter,
+        myHeader, myUser, mysubsicriber, myProfile, myPolicy,
+        myReports, myCompany, myClient, myClasses, myinsPolicy,
+         myRoles, mycompanyProfile, myFooter,
+        //  myCoverage
     },
     router,
 });

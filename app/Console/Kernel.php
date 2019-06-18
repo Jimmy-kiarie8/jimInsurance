@@ -14,7 +14,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        '\App\Console\Commands\EmailCommand',
+        // '\App\Console\Commands\EmailCommand',
+        // '\App\Console\Commands\SmsComand',
     ];
 
     /**
@@ -27,13 +28,15 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        // $schedule->command('test:testcommand')
-        // ->everyMinute();
-        $schedule->call(function () {
-            DB::table('reminders')->insert(
-              ['policy_id' => 1, 'client_id' => 9]
-              );
-          })->everyMinute();
+        $schedule->command('notification:Sms')
+        ->everyMinute();
+        $schedule->command('notification:Birthday')
+        ->everyMinute();
+        // $schedule->call(function () {
+        //     DB::table('reminders')->insert(
+        //       ['policy_id' => 1, 'client_id' => 9]
+        //       );
+        //   })->everyMinute();
     }
 
     /**

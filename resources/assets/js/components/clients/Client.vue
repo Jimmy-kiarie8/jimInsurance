@@ -23,7 +23,7 @@
                             <td class="text-xs-right">{{ props.item.name }}</td>
                             <td class="text-xs-right">{{ props.item.email }}</td>
                             <td class="text-xs-right">{{ props.item.phone }}</td>
-                            <td class="text-xs-right">{{ props.item.birth_day }}</td>
+                            <td class="text-xs-right">{{ props.item.birthDay }}</td>
                             <!-- <td class="text-xs-right">{{ props.item.created_at }}</td> -->
                             <td class="justify-center layout px-0">
                                 <v-btn icon class="mx-0" @click="openEdit(props.item)">
@@ -91,7 +91,7 @@ export default {
                 },
                 {
                     text: "D.O.B",
-                    value: "birth_day"
+                    value: "birthDay"
                 },
                 // {
                 //     text: "Created On",

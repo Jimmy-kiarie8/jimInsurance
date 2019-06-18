@@ -28,13 +28,13 @@
                             <td class="text-xs-right">{{ props.item.client_name }}</td>
                             <td class="text-xs-right">{{ props.item.client_phone }}</td>
                             <td class="text-xs-right">{{ props.item.premium }}</td>
-                            <td class="text-xs-right">{{ props.item.effective_date }}</td>
-                            <td class="text-xs-right">{{ props.item.exp_date }}</td>
+                            <td class="text-xs-right">{{ props.item.effectiveDate }}</td>
+                            <td class="text-xs-right">{{ props.item.expDate }}</td>
                             <td class="justify-center layout px-0">
                                 <v-btn icon class="mx-0" @click="editItem(props.item)">
                                     <v-icon color="blue darken-2" small>edit</v-icon>
                                 </v-btn>
-                                <!-- <v-btn icon class="mx-0" @click="printItem(props.item)"> 
+                                <!-- <v-btn icon class="mx-0" @click="printItem(props.item)">
                                     <v-icon color="indigo darken-2" small>print</v-icon>
                                 </v-btn> -->
                                 <v-btn icon class="mx-0" @click="deleteItem(props.item)">
@@ -112,11 +112,11 @@ export default {
                 },
                 {
                     text: 'Effective Date',
-                    value: 'effective_date'
+                    value: 'effectiveDate'
                 },
                 {
                     text: 'Expiry Date',
-                    value: 'exp_date'
+                    value: 'expDate'
                 },
                 {
                     text: 'Actions',
