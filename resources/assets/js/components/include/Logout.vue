@@ -14,18 +14,16 @@
           <img src="https://vuetifyjs.com/apple-touch-icon-180x180.png" alt="avatar">
         </v-avatar> -->
 
-        <v-card>  
+        <v-card>
             <v-list>
                 <v-list-tile avatar>
-                    <v-list-tile-avatar>
-                        <!-- <avatar :username="user.name" style="font-size: 40px;margin: auto;padding: 50px;"></avatar> -->
-                        <!-- <avatar :username="user.name" style="font-size: 20px;margin: auto;padding: 0px;"></avatar> -->
+                    <!-- <v-list-tile-avatar>
                         <img :src="user.profile" alt="John">
-                    </v-list-tile-avatar>
+                    </v-list-tile-avatar> -->
 
                     <v-list-tile-content>
                         <v-list-tile-title>{{ user.name }}</v-list-tile-title>
-                    </v-list-tile-content> 
+                    </v-list-tile-content>
 
                     <!-- <v-list-tile-action v-if="notifications.length > 0">
                         <v-tooltip bottom>

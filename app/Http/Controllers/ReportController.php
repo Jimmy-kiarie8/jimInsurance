@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Policy;
 use App\Reminder;
 use App\Client;
+use App\InsuranceClass;
 
 class ReportController extends Controller
 {
@@ -21,6 +22,9 @@ class ReportController extends Controller
         }
         // return $policies;
         $policies->transform(function ($policy) {
+            $ins_class = InsuranceClass::find($policy->InsClass_id);
+            // dd($policy->InsClass_id);
+            $policy->insurance_class = ($ins_class) ? $ins_class->code : '' ;
             $client = Client::find($policy->client_id);
             // dd($policy->client_id);
             if ($client) {
@@ -53,6 +57,9 @@ class ReportController extends Controller
         // dd([$start_date, $end_date]);
         $policies = Policy::whereBetween('exp_date', [$start_date, $end_date])->get();
         $policies->transform(function ($policy) {
+            $ins_class = InsuranceClass::find($policy->InsClass_id);
+            // dd($policy->InsClass_id);
+            $policy->insurance_class = ($ins_class) ? $ins_class->code : '' ;
             $clients = Client::find($policy->client_id);
             if ($clients) {
                 $policy->client_no = $clients->client_no;

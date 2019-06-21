@@ -96,8 +96,8 @@ class PolicyController extends Controller
                 $policy->client_name = $client->name;
                 $policy->client_phone = $client->phone;
             }
-            $policy->expDate = date('d-M-Y', strtotime($policy->expDate));
-            $policy->effectiveDate = date('d-M-Y', strtotime($policy->effectiveDate));
+            $policy->expDate = date('d-M-Y', strtotime($policy->exp_date));
+            $policy->effectiveDate = date('d-M-Y', strtotime($policy->effective_date));
             $company = Company::find($policy->company_id);
             if ($company) {
                 $policy->company_name = $company->company_name;

@@ -137,8 +137,8 @@ export default {
                 "Insured": "insured",
                 "Premium Charge": "premium",
                 "Premium Paid": "premium_paid",
-                "Balance": "balance",
-                "Created On": "created_at",
+                "Premium": "premium",
+                "Insurance Class": "insurance_class",
             },
             product_fields: {
                 "Client Number": "client_no",
@@ -148,8 +148,8 @@ export default {
                 "Insured": "insured",
                 "Premium Charge": "premium",
                 "Premium Paid": "premium_paid",
-                "Balance": "balance",
-                "Created On": "created_at",
+                "Premium": "premium",
+                "Insurance Class": "insurance_class",
             },
             reminder_fields: {
                 "Client Number": "client_no",
@@ -158,8 +158,8 @@ export default {
                 "Effective Date": "effective_date",
                 "Expiry Date": "exp_date",
                 "Insured": "insured",
-                "Balance": "balance",
-                "Created On": "created_at",
+                "Premium": "premium",
+                "Insurance Class": "insurance_class",
             }
         }
     },

@@ -75,17 +75,17 @@ class LoginController extends Controller {
 		}
 	}
 
-	
+
 	/**
 	 * Get the needed authorization credentials from the request.
 	 *
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return array
 	 */
-	protected function credentials(Request $request)
-	{
-	    $credentials = $request->only($this->username(), 'password');
-	    $credentials['verifyToken'] = null;
-	    return $credentials;
-	}
+	// protected function credentials(Request $request)
+	// {
+	//     $credentials = $request->only($this->username(), 'password');
+	//     $credentials['verifyToken'] = null;
+	//     return $credentials;
+	// }
 }
