@@ -141,6 +141,7 @@ export default {
                 "Insurance Class": "insurance_class",
             },
             product_fields: {
+                "Policy Number": "policy_no",
                 "Client Number": "client_no",
                 "Client Name": "client_name",
                 "Effective Date": "effective_date",
