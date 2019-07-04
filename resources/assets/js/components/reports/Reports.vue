@@ -130,6 +130,7 @@ export default {
             loader: false,
             loading: false,
             premium_fields: {
+                "Policy Number": "policy_no",
                 "Client Number": "client_no",
                 "Client Name": "client_name",
                 "Effective Date": "effective_date",
@@ -153,6 +154,7 @@ export default {
                 "Insurance Class": "insurance_class",
             },
             reminder_fields: {
+                "Policy Number": "policy_no",
                 "Client Number": "client_no",
                 "Client Name": "client_name",
                 "Client Phone": "client_phone",
