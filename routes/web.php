@@ -70,7 +70,12 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::resource('insuracetype', 'InsuranceTypeController');
 	Route::resource('policystatus', 'PolicyStatusController');
 	Route::resource('insuraceclass', 'InsuranceClassController');
-	Route::resource('roles', 'RoleController');
+    Route::resource('roles', 'RoleController');
+    Route::resource('sms', 'SmscontactController');
+
+
+    Route::post('sendSms', 'SmscontactController@sendSms')->name('sendSms');
+
 	Route::get('getUsersRole', 'RoleController@getUsersRole')->name('getUsersRole');
 	Route::get('getRoles', 'RoleController@getRoles')->name('getRoles');
 	Route::get('getPermissions', 'RoleController@getPermissions')->name('getPermissions');

@@ -108,6 +108,14 @@
                                 </v-list-tile-action>
                                 <v-list-tile-title>Policy coverage </v-list-tile-title>
                             </router-link> -->
+                            <router-link to="/sms" class="v-list__tile v-list__tile--link">
+                                <div class="v-list__tile__action"><i aria-hidden="true" style="color: rgb(28, 35, 79)" class="icon material-icons">email</i></div>
+                                <div class="v-list__tile__content">
+                                    <div class="v-list__tile__title">
+                                        Sms Contacts
+                                    </div>
+                                </div>
+                            </router-link>
                             <router-link to="/users" class="v-list__tile v-list__tile--link">
                                 <div class="v-list__tile__action"><i aria-hidden="true" style="color: rgb(28, 35, 79)" class="icon material-icons">account_circle</i></div>
                                 <div class="v-list__tile__content">
@@ -140,6 +148,11 @@
             <Logout :user="user"></Logout>
                 <!-- <v-toolbar-side-icon></v-toolbar-side-icon> -->
         </v-toolbar>
+
+        <v-snackbar :timeout="timeout" bottom="bottom" :color="color" left="left" v-model="snackbar">
+            {{ message }}
+            <v-icon dark right>check_circle</v-icon>
+        </v-snackbar>
     </v-app>
 </div>
 </template>
@@ -153,45 +166,12 @@ export default {
     },
     data() {
         return {
-            items: [{
-                    color: 'red',
-                    text: 'Red'
-                },
-                {
-                    color: 'green',
-                    text: 'Green'
-                },
-                {
-                    color: 'grey',
-                    text: 'grey'
-                },
-                {
-                    color: 'orange',
-                    text: 'Orange'
-                },
-                {
-                    color: 'purple',
-                    text: 'purple'
-                },
-                {
-                    color: 'blue',
-                    text: 'blue'
-                },
-                {
-                    color: 'indigo',
-                    text: 'indigo'
-                },
-                {
-                    color: 'pink',
-                    text: 'pink'
-                },
-                {
-                    color: 'cyan',
-                    text: 'cyan'
-                },
-            ],
+            snackbar: false,
+            timeout: 4000,
+            color: "black",
+            message: "Success",
             sheet: false,
-            color: 'indigo',
+            color: 'rgb(25, 117, 210)',
             dialog: false,
             changeColor: 'item.color',
             drawer: true,
@@ -201,6 +181,16 @@ export default {
             mode: '',
             company: {},
         }
+    },
+    methods: {
+        showSnackbar() {
+            this.snackbar = true
+        }
+    },
+    created () {
+        eventBus.$on('alertRequest', data => {
+            this.showSnackbar()
+        });
     },
     mounted() {
         axios.post('getLogo')

@@ -54,6 +54,7 @@ import myClasses from'./components/master/insclass';
 import myinsPolicy from'./components/master/policy/Policy.vue';
 // import myCoverage from'./components/master/coverage';
 import mycompanyProfile from'./components/master/company/Company.vue';
+import mySms from'./components/sms/Sms';
 
 
 const routes = [
@@ -72,6 +73,7 @@ const routes = [
     {path: '/inspolicy', component: myinsPolicy },
     // {path: '/coverage', component: myCoverage },
     {path: '/companyprofile', component: mycompanyProfile },
+    {path: '/sms', component: mySms },
 
 ]
 
@@ -86,7 +88,7 @@ const app = new Vue({
     components: {
         myHeader, myUser, mysubsicriber, myProfile, myPolicy,
         myReports, myCompany, myClient, myClasses, myinsPolicy,
-         myRoles, mycompanyProfile, myFooter,
+         myRoles, mycompanyProfile, myFooter, mySms
         //  myCoverage
     },
     router,
