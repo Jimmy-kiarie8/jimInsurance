@@ -89,11 +89,13 @@ class SmscontactController extends Controller
         $message->message = $request->message;
         $message->user_id = Auth::id();
         $message->save();
+        $phone = [];
         $sms = new Sms();
         foreach ($request->selected as $key => $value) {
             $messageSms = new MessageSms();
             $messageSms->message_id = $message->id;
             $messageSms->smscontact_id = $value['id'];
+            // dd($value);
             $messageSms->save();
             $sms->message($value, $request->message);
             $phone[] = $value['phone'];
