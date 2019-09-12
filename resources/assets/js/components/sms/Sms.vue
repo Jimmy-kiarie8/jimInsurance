@@ -17,7 +17,7 @@
                         <v-spacer></v-spacer>
                         <v-text-field v-model="search" append-icon="search" label="Search" single-line></v-text-field>
                     </v-card-title>
-                    <v-data-table v-model="selected" :headers="headers" :items="allContacts" :pagination.sync="pagination" select-all item-key="name" class="elevation-1">
+                    <v-data-table v-model="selected" :headers="headers" :items="allContacts.data" :pagination.sync="pagination" select-all item-key="name" class="elevation-1">
                         <template slot="headers" slot-scope="props">
                             <tr>
                                 <th>
