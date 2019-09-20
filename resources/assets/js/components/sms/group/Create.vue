@@ -3,7 +3,7 @@
     <v-dialog v-model="dialog" persistent max-width="400px">
         <v-card>
             <v-card-title fixed>
-                <span class="headline">Add Contact</span>
+                <span class="headline">Add Group</span>
             </v-card-title>
             <v-card-text>
                 <v-container grid-list-md>
@@ -12,19 +12,11 @@
                             <v-container grid-list-xl fluid>
                                 <v-layout wrap>
                                     <v-flex xs12 sm12>
-                                        <label for="">Group</label>
-                                        <el-select v-model="form.group" clearable placeholder="Select Group">
-                                            <el-option v-for="item in groups" :key="item.id" :label="item.group_name" :value="item.id">
-                                            </el-option>
-                                        </el-select>
+                                        <v-text-field v-model="form.group_name" color="blue darken-2" label="Group name" required></v-text-field>
+                                        <small class="has-text-danger" v-if="errors.group_name">{{ errors.group_name[0] }}</small>
                                     </v-flex>
                                     <v-flex xs12 sm12>
-                                        <v-text-field v-model="form.name" color="blue darken-2" label="Full name" required></v-text-field>
-                                        <small class="has-text-danger" v-if="errors.name">{{ errors.name[0] }}</small>
-                                    </v-flex>
-                                    <v-flex xs12 sm12>
-                                        <v-text-field v-model="form.phone" color="blue darken-2" label="Phone" required></v-text-field>
-                                        <small class="has-text-danger" v-if="errors.phone">{{ errors.phone[0] }}</small>
+                                        <v-text-field v-model="form.description" label="Description" multi-line></v-text-field>
                                     </v-flex>
                                 </v-layout>
                             </v-container>
@@ -50,13 +42,12 @@
 export default {
     data() {
         const defaultForm = Object.freeze({
-            name: '',
-            phone: null,
+            group_name: '',
+            description: null,
         })
         return {
             loading: false,
             dialog: false,
-            groups: {},
             errors: {},
             defaultForm,
             loader: false,
@@ -67,12 +58,12 @@ export default {
         save() {
             this.errors = {}
             this.loading = true
-            axios.post('/sms', this.$data.form).
+            axios.post('/groups', this.$data.form).
             then((response) => {
-                    eventBus.$emit('refreshContact');
-                    eventBus.$emit('alertRequest', 'Contact created');
+                    eventBus.$emit('alertRequest', 'Group Created');
+                    eventBus.$emit('refreshGroup');
                     this.loading = false
-                    this.close();
+                    // this.close();
                     // this.resetForm();
 
                 })
@@ -88,28 +79,11 @@ export default {
         close() {
             this.dialog = false
         },
-        getGroups() {
-            this.loading = true;
-            axios
-                .get("groups")
-                .then(response => {
-                    this.groups = response.data;
-                    this.loading = false;
-                })
-                .catch(error => {
-                    this.loading = false;
-                    this.errors = error.response.data.errors;
-                });
-        },
     },
-
     created() {
-        eventBus.$on('smsContactEvent', data => {
+        eventBus.$on('openGroupEvent', data => {
             this.dialog = true
         });
-    },
-    mounted () {
-        this.getGroups();
     },
 }
 </script>

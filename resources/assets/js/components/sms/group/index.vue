@@ -6,10 +6,9 @@
                 <div class="container">
                     <v-card-title>
                         Contacts
-                        <v-btn slot="activator" color="primary" dark @click="openAdd" flat>Add Contact</v-btn>
-                        <v-btn slot="activator" color="primary" dark @click="sendSms" flat>Send Sms</v-btn>
+                        <v-btn slot="activator" color="primary" dark @click="openAdd" flat>Add Group</v-btn>
                         <v-tooltip right>
-                            <v-btn icon slot="activator" class="mx-0" @click="getContacts">
+                            <v-btn icon slot="activator" class="mx-0" @click="getGroups">
                                 <v-icon color="blue darken-2" small>refresh</v-icon>
                             </v-btn>
                             <span>Refresh</span>
@@ -17,7 +16,7 @@
                         <v-spacer></v-spacer>
                         <v-text-field v-model="search" append-icon="search" label="Search" single-line></v-text-field>
                     </v-card-title>
-                    <v-data-table v-model="selected" :headers="headers" :items="allContacts.data" :pagination.sync="pagination" class="elevation-1">
+                    <v-data-table v-model="selected" :headers="headers" :items="allGroups" :pagination.sync="pagination"  class="elevation-1">
                         <template slot="headers" slot-scope="props">
                             <tr>
                                 <th v-for="header in props.headers" :key="header.text" :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']" @click="changeSort(header.value)">
@@ -28,8 +27,9 @@
                         </template>
                         <template slot="items" slot-scope="props">
                             <tr :active="props.selected" @click="props.selected = !props.selected">
-                                <td>{{ props.item.name }}</td>
-                                <td class="text-xs-right">{{ props.item.phone }}</td>
+
+                                <td>{{ props.item.group_name }}</td>
+                                <td class="text-xs-right">{{ props.item.description }}</td>
                                 <td class="text-xs-right">{{ props.item.created_at }}</td>
                                 <td class="text-xs-right">
                                     <v-btn icon class="mx-0" @click="openEdit(props.item)">
@@ -58,21 +58,18 @@
         </v-snackbar>
     </v-content>
     <myCreate></myCreate>
-    <myEdit></myEdit>
-    <mySend></mySend>
+    <!-- <myEdit></myEdit> -->
 </div>
 </template>
 
 <script>
 import myCreate from './Create'
-import myEdit from './Edit'
-import mySend from './Send'
+// import myEdit from './Edit'
 export default {
     props: ["user"],
     components: {
         myCreate,
-        myEdit,
-        mySend
+        // myEdit,
     },
     data() {
         return {
@@ -82,11 +79,11 @@ export default {
             selected: [],
             headers: [{
                     text: "Name",
-                    value: "name"
+                    value: "group_name"
                 },
                 {
-                    text: "Phone Number",
-                    value: "phone"
+                    text: "Description",
+                    value: "description"
                 },
                 {
                     text: "Created on",
@@ -108,7 +105,7 @@ export default {
             timeout: 5000,
             color: "black",
             message: "Success",
-            allContacts: [],
+            allGroups: [],
             editedItem: {},
             contact_no: '',
             select: {
@@ -119,15 +116,10 @@ export default {
     },
     methods: {
         openShow(item) {
-            this.editedIndex = this.allContacts.indexOf(item);
-            this.editedItem = Object.assign({}, item);
-            this.dispShow = true;
+
         },
         openAdd() {
-            eventBus.$emit('smsContactEvent')
-        },
-        openEdit(data) {
-            eventBus.$emit('smsUpdateContactEvent', data)
+            eventBus.$emit('openGroupEvent')
         },
         sendSms(item) {
             eventBus.$emit('sendSmsEvent', this.selected)
@@ -136,14 +128,14 @@ export default {
             if (confirm("Are you sure you want to delete this Contact?")) {
                 this.loading = true;
                 axios
-                    .delete(`/sms/${item.id}`)
+                    .delete(`/groups/${item.id}`)
                     .then(response => {
-                        this.getContacts()
+                        this.getGroups()
                         this.loading = false;
                         this.message = "deleted successifully";
                         this.color = "red";
                         this.snackbar = true;
-                        // this.allContacts.splice(index, 1);
+                        // this.allGroups.splice(index, 1);
                     })
                     .catch(error => {
                         this.loading = false;
@@ -157,12 +149,12 @@ export default {
         close() {
             this.dispAdd = this.dispShow = this.dispEdit = false;
         },
-        getContacts() {
+        getGroups() {
             this.loading = true;
             axios
-                .get("sms")
+                .get("groups")
                 .then(response => {
-                    this.allContacts = response.data;
+                    this.allGroups = response.data;
                     this.loading = false;
                 })
                 .catch(error => {
@@ -179,7 +171,7 @@ export default {
 
         toggleAll() {
             if (this.selected.length) this.selected = []
-            else this.selected = this.allContacts.slice()
+            else this.selected = this.allGroups.slice()
         },
         changeSort(column) {
             if (this.pagination.sortBy === column) {
@@ -190,33 +182,13 @@ export default {
             }
         }
     },
-    mounted() {
-        this.loader = true;
-        this.getContacts();
-        axios
-            .get("companies")
-            .then(response => {
-                this.loader = false;
-                this.allCompanies = response.data;
-            })
-            .catch(error => {
-                this.loader = false;
-                this.errors = error.response.data.errors;
-            });
+    mounted () {
+        this.getGroups();
     },
     created() {
-        eventBus.$on('refreshContact', data => {
-            this.getContacts()
+        eventBus.$on('refreshGroup', data => {
+            this.getGroups()
         });
     },
-    // beforeRouteEnter(to, from, next) {
-    //     next(vm => {
-    //         if (vm.role === 'Admin' || vm.role === 'companyAdmin') {
-    //             next();
-    //         } else {
-    //             next('/');
-    //         }
-    //     })
-    // }
 };
 </script>

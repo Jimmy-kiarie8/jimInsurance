@@ -7,15 +7,20 @@
             </v-card-title>
             <v-card-text>
                 <v-container grid-list-md>
-                        <v-container grid-list-xl fluid>
-                            <v-text-field v-model="form.message" label="Message" multi-line></v-text-field>
-                        </v-container>
-                        <v-card-actions>
-                            <v-btn flat @click="resetForm">reset</v-btn>
-                            <v-btn flat @click="close">Close</v-btn>
-                            <v-spacer></v-spacer>
-                            <v-btn :disabled="loading" flat color="primary" @click="save" :loading="loading">Submit</v-btn>
-                        </v-card-actions>
+                    <label for="">Group</label>
+                    <el-select v-model="form.group" clearable placeholder="Select Group">
+                        <el-option v-for="item in groups" :key="item.id" :label="item.group_name" :value="item.id">
+                        </el-option>
+                    </el-select>
+                    <v-container grid-list-xl fluid>
+                        <v-text-field v-model="form.message" label="Message" multi-line></v-text-field>
+                    </v-container>
+                    <v-card-actions>
+                        <v-btn flat @click="resetForm">reset</v-btn>
+                        <v-btn flat @click="close">Close</v-btn>
+                        <v-spacer></v-spacer>
+                        <v-btn :disabled="loading" flat color="primary" @click="save" :loading="loading">Submit</v-btn>
+                    </v-card-actions>
                 </v-container>
             </v-card-text>
         </v-card>
@@ -28,12 +33,13 @@ export default {
     data() {
         const defaultForm = Object.freeze({
             message: '',
-            selected: []
+            group: '',
         })
         return {
             loading: false,
             dialog: false,
             errors: {},
+            groups: {},
             defaultForm,
             loader: false,
             form: Object.assign({}, defaultForm),
@@ -46,8 +52,8 @@ export default {
             axios.post('/sendSms', this.$data.form).
             then((response) => {
                     this.loading = false
-                    console.log(response);
-                    // this.close();
+                    eventBus.$emit('alertRequest', 'messages sent');
+                    this.close();
                     // this.resetForm();
 
                 })
@@ -63,12 +69,28 @@ export default {
         close() {
             this.dialog = false
         },
+        getGroups() {
+            this.loading = true;
+            axios
+                .get("groups")
+                .then(response => {
+                    this.groups = response.data;
+                    this.loading = false;
+                })
+                .catch(error => {
+                    this.loading = false;
+                    this.errors = error.response.data.errors;
+                });
+        },
     },
     created() {
         eventBus.$on('sendSmsEvent', data => {
             this.dialog = true
             this.form.selected = data
         });
+    },
+    mounted () {
+        this.getGroups();
     },
 }
 </script>

@@ -72,6 +72,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::resource('insuraceclass', 'InsuranceClassController');
     Route::resource('roles', 'RoleController');
     Route::resource('sms', 'SmscontactController');
+    Route::resource('groups', 'GroupController');
 
 
     Route::post('sendSms', 'SmscontactController@sendSms')->name('sendSms');

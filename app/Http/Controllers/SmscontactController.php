@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Client;
 use App\Smscontact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Sms;
 use App\Message;
 use App\MessageSms;
+use App\models\Group;
 
 class SmscontactController extends Controller
 {
@@ -18,7 +20,7 @@ class SmscontactController extends Controller
      */
     public function index()
     {
-        return Smscontact::all();
+        return Smscontact::paginate(500);
     }
 
     /**
@@ -29,8 +31,10 @@ class SmscontactController extends Controller
      */
     public function store(Request $request)
     {
+        // return $request->all();
         request()->validate(
             [
+                'group' => 'required',
                 'name' => 'required',
                 'phone' => 'required|regex:/(07)[0-9]{8}/'
             ],
@@ -39,8 +43,8 @@ class SmscontactController extends Controller
                 'phone.regex' => 'The phone format is invalid. Please use 07.. formart and enter 10 numbers'
             ]
         );
-        // return $request->all();
         $sms = new Smscontact();
+        $sms->group_id = $request->group;
         $sms->name = $request->name;
         $sms->phone = $request->phone;
         $sms->user_id = Auth::id();
@@ -68,7 +72,12 @@ class SmscontactController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $sms = Smscontact::find($id);
+        $sms->group_id = $request->group_id;
+        $sms->name = $request->name;
+        $sms->phone = $request->phone;
+        $sms->save();
+        return $sms;
     }
 
     /**
@@ -85,23 +94,26 @@ class SmscontactController extends Controller
     public function sendSms(Request $request)
     {
         // return $request->all();
+        $group = Group::select('group_name')->find($request->group);
+        if ($group->group_name == 'Clients') {
+            $selected = Client::all();
+        } else {
+            $selected = Smscontact::where('group_id', $request->group)->get();
+        }
         $message = new Message();
         $message->message = $request->message;
         $message->user_id = Auth::id();
         $message->save();
         $phone = [];
         $sms = new Sms();
-        foreach ($request->selected as $key => $value) {
+        foreach ($selected as $key => $value) {
             $messageSms = new MessageSms();
             $messageSms->message_id = $message->id;
             $messageSms->smscontact_id = $value['id'];
-            // dd($value);
             $messageSms->save();
             $sms->message($value, $request->message);
             $phone[] = $value['phone'];
         }
-        // dd($phone);
+        return;
     }
 }
-
-// Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veniam saepe dolore porro deserunt est blanditiis laboriosam, omnis placeat, minima laudantium veritatis deleniti eum quam error quo! Voluptatibus blanditiis illum nisi.

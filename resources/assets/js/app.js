@@ -20,6 +20,10 @@ import 'vuetify/dist/vuetify.min.css'
 
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+
+import locale from 'element-ui/lib/locale/lang/en'
+
+Vue.use(ElementUI, { locale })
 // import printer from "vue-printer";
 import JsonExcel from 'vue-json-excel'
 // import test from "vue-test";
@@ -55,6 +59,7 @@ import myinsPolicy from'./components/master/policy/Policy.vue';
 // import myCoverage from'./components/master/coverage';
 import mycompanyProfile from'./components/master/company/Company.vue';
 import mySms from'./components/sms/Sms';
+import myGroup from'./components/sms/group';
 
 
 const routes = [
@@ -73,6 +78,7 @@ const routes = [
     {path: '/inspolicy', component: myinsPolicy },
     // {path: '/coverage', component: myCoverage },
     {path: '/companyprofile', component: mycompanyProfile },
+    {path: '/groups', component: myGroup },
     {path: '/sms', component: mySms },
 
 ]
@@ -88,7 +94,7 @@ const app = new Vue({
     components: {
         myHeader, myUser, mysubsicriber, myProfile, myPolicy,
         myReports, myCompany, myClient, myClasses, myinsPolicy,
-         myRoles, mycompanyProfile, myFooter, mySms
+         myRoles, mycompanyProfile, myFooter, mySms, myGroup
         //  myCoverage
     },
     router,

@@ -54,14 +54,6 @@
                                 </div>
                             </div>
                         </router-link>
-                        <!-- <router-link to="/branches" class="v-list__tile v-list__tile--link">
-                            <div class="v-list__tile__action"><i aria-hidden="true" style="color: rgb(28, 35, 79)" class="icon material-icons">call_split</i></div>
-                            <div class="v-list__tile__content">
-                                <div class="v-list__tile__title">
-                                    Manage Branches
-                                </div>
-                            </div>
-                        </router-link> -->
                         <router-link to="/reports" class="v-list__tile v-list__tile--link">
                             <div class="v-list__tile__action"><i aria-hidden="true" style="color: rgb(28, 35, 79)" class="icon material-icons">book</i></div>
                             <div class="v-list__tile__content">
@@ -109,10 +101,18 @@
                                 <v-list-tile-title>Policy coverage </v-list-tile-title>
                             </router-link> -->
                             <router-link to="/sms" class="v-list__tile v-list__tile--link">
-                                <div class="v-list__tile__action"><i aria-hidden="true" style="color: rgb(28, 35, 79)" class="icon material-icons">email</i></div>
+                                <div class="v-list__tile__action"><i aria-hidden="true" style="color: rgb(28, 35, 79)" class="icon material-icons">gavel</i></div>
                                 <div class="v-list__tile__content">
                                     <div class="v-list__tile__title">
                                         Sms Contacts
+                                    </div>
+                                </div>
+                            </router-link>
+                            <router-link to="/groups" class="v-list__tile v-list__tile--link">
+                                <div class="v-list__tile__action"><i aria-hidden="true" style="color: rgb(28, 35, 79)" class="icon material-icons">email</i></div>
+                                <div class="v-list__tile__content">
+                                    <div class="v-list__tile__title">
+                                        Sms Groups
                                     </div>
                                 </div>
                             </router-link>
@@ -183,13 +183,14 @@ export default {
         }
     },
     methods: {
-        showSnackbar() {
+        showSnackbar(data) {
             this.snackbar = true
+            this.message = data
         }
     },
     created () {
         eventBus.$on('alertRequest', data => {
-            this.showSnackbar()
+            this.showSnackbar(data)
         });
     },
     mounted() {

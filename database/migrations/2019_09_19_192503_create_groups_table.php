@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSmscontactsTable extends Migration
+class CreateGroupsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateSmscontactsTable extends Migration
      */
     public function up()
     {
-        Schema::create('smscontacts', function (Blueprint $table) {
+        Schema::create('groups', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
-            $table->string('phone');
-            $table->integer('group_id')->nullable();
-            $table->string('name');
+            $table->string('group_name');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ class CreateSmscontactsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('smscontacts');
+        Schema::dropIfExists('groups');
     }
 }
