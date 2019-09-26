@@ -8,6 +8,7 @@
                         Contacts
                         <v-btn slot="activator" color="primary" dark @click="openAdd" flat>Add Contact</v-btn>
                         <v-btn slot="activator" color="primary" dark @click="sendSms" flat>Send Sms</v-btn>
+                        <v-btn slot="activator" color="primary" dark @click="openUpload" flat>Upload Contacts</v-btn>
                         <v-tooltip right>
                             <v-btn icon slot="activator" class="mx-0" @click="getContacts">
                                 <v-icon color="blue darken-2" small>refresh</v-icon>
@@ -59,6 +60,7 @@
     </v-content>
     <myCreate></myCreate>
     <myEdit></myEdit>
+    <myUpload></myUpload>
     <mySend></mySend>
 </div>
 </template>
@@ -67,12 +69,14 @@
 import myCreate from './Create'
 import myEdit from './Edit'
 import mySend from './Send'
+import myUpload from '../uploads/Upload'
 export default {
     props: ["user"],
     components: {
         myCreate,
         myEdit,
-        mySend
+        mySend,
+        myUpload
     },
     data() {
         return {
@@ -131,6 +135,9 @@ export default {
         },
         sendSms(item) {
             eventBus.$emit('sendSmsEvent', this.selected)
+        },
+        openUpload() {
+            eventBus.$emit('openUploadEvent')
         },
         deleteItem(item) {
             if (confirm("Are you sure you want to delete this Contact?")) {

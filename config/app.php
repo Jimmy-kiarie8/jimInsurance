@@ -147,7 +147,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
-        Jimmyjs\ReportGenerator\ServiceProvider::class,
+        // Jimmyjs\ReportGenerator\ServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*
@@ -214,9 +214,9 @@ return [
         'PDF' => Barryvdh\DomPDF\Facade::class,
 
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
-        'PdfReport' => Jimmyjs\ReportGenerator\Facades\PdfReportFacade::class,
-        'ExcelReport' => Jimmyjs\ReportGenerator\Facades\ExcelReportFacade::class,
-        'CSVReport' => Jimmyjs\ReportGenerator\Facades\CSVReportFacade::class,
+        // 'PdfReport' => Jimmyjs\ReportGenerator\Facades\PdfReportFacade::class,
+        // 'ExcelReport' => Jimmyjs\ReportGenerator\Facades\ExcelReportFacade::class,
+        // 'CSVReport' => Jimmyjs\ReportGenerator\Facades\CSVReportFacade::class,
 
     ],
 

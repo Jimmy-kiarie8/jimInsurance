@@ -76,6 +76,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 
     Route::post('sendSms', 'SmscontactController@sendSms')->name('sendSms');
+    Route::post('importContacts', 'UploadController@importContacts')->name('importContacts');
 
 	Route::get('getUsersRole', 'RoleController@getUsersRole')->name('getUsersRole');
 	Route::get('getRoles', 'RoleController@getRoles')->name('getRoles');

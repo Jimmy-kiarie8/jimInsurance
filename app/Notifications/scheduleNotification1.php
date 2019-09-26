@@ -7,10 +7,10 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class scheduleNotification extends Notification
+class scheduleNotification1 extends Notification
 {
     use Queueable;
-    
+
     public $shipments, $user;
 
     /**
