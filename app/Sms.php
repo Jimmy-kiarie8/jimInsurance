@@ -35,7 +35,7 @@ class Sms extends Model
     {
         // $username = 'willow'; // use 'sandbox' for development in the test environment
         // $apiKey   = 'ef0c4a1d3d2b347d2c7d173fb61b3841735bf523e1bbeda938508d782cf20153'; // Live
-        
+
         $username = 'sandbox'; // use 'sandbox' for development in the test environment
         $apiKey   = '2fd972d459061d98697de4170eef1bb5137d8f7a6d1c7e3c6a2a924cecacf203'; // use your sandbox app API key for development in the test environment
         $AT       = new AfricasTalking($username, $apiKey);
@@ -57,7 +57,7 @@ class Sms extends Model
         // $apiKey   = 'ef0c4a1d3d2b347d2c7d173fb61b3841735bf523e1bbeda938508d782cf20153'; // Live
 
 
-        $apiKey   = '2fd972d459061d98697de4170eef1bb5137d8f7a6d1c7e3c6a2a924cecacf203'; // use your sandbox app API key for development in the test environment
+        $apiKey   = 'b3b4f2cc4b86fd1395e5ed430978de9f536dd7756d0e4594a8f28482255e4557'; // use your sandbox app API key for development in the test environment
         $username = 'sandbox'; // use 'sandbox' for development in the test environment
 
         $AT       = new AfricasTalking($username, $apiKey);

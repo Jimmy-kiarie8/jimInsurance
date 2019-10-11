@@ -8,35 +8,12 @@
                 <div class="card-header" id="socialite">
                     <v-card flat tile class="flex">
                         <v-card-title class="grey lighten-2">
-                           <strong class="subheading">Login!</strong>
-                           <v-spacer></v-spacer>
-                           {{-- <a href="/login/facebook">
-                            <v-btn
-                            icon
-                            dark
-                            class="mx-3"
-                            >
-                            <v-icon size="24px">fa fa-facebook</v-icon>
-                            </v-btn>
-                            </a>
-                            <a href="/login/google">
-                                <v-btn
-                                    icon
-                                    dark
-                                    class="mx-3"
-                                    >
-                                <v-icon size="24px">fa fa-google</v-icon>
-                                </v-btn>
-                            </a> --}}
+                            Welcome
+                           <img src="/storage/logo/logo_willo.png" alt="Logo" style="margin: auto;">
+
                         </v-card-title>
                     </v-card>
                 </div>
-                {{-- <div class="card-header" id="socialite">
-                    {{ __('Login') }}
-                    <div class="text-right">
-                        <a href="/login/facebook">Login with: <v-icon size="18px" class="mr-3">fab fa-facebook</v-icon></a>
-                    </div>
-                </div> --}}
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
