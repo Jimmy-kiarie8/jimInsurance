@@ -4,6 +4,8 @@
         <v-container fluid fill-height v-show="!loader">
             <v-layout justify-center align-center>
                 <div class="container">
+                    <v-text-field v-model="client.search" append-icon="search" label="Enter any client detail and press enter to search (e.g Jane doe)" @keyup.enter="search_client"></v-text-field>
+                    <v-pagination v-model="AllClients.current_page" :length="AllClients.last_page" total-visible="5" @input="next_page(AllClients.path, AllClients.current_page)" circle v-if="AllClients.last_page > 1"></v-pagination>
                     <v-card-title>
                         Clients
                         <v-btn slot="activator" color="primary" dark @click="openAdd">Add Client</v-btn>
@@ -16,7 +18,7 @@
                         <v-spacer></v-spacer>
                         <v-text-field v-model="search" append-icon="search" label="Search" single-line></v-text-field>
                     </v-card-title>
-                    <v-data-table :headers="headers" :items="AllClients" class="elevation-1" :loading="loading" :search="search">
+                    <v-data-table :headers="headers" :items="AllClients.data" class="elevation-1" :loading="loading" :search="search">
                         <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
                         <template slot="items" slot-scope="props">
                             <td>{{ props.item.client_no }}</td>
@@ -72,8 +74,7 @@ export default {
     },
     data() {
         return {
-            headers: [
-                {
+            headers: [{
                     text: "Client Number",
                     value: "client_no"
                 },
@@ -120,6 +121,9 @@ export default {
             select: {
                 branch_name: "All",
                 id: "all"
+            },
+            client: {
+                search: ''
             }
         };
     },
@@ -158,6 +162,18 @@ export default {
                     this.errors = error.response.data.errors;
                 });
         },
+        next_page(path, page) {
+            this.loading = true;
+            axios.get(path + '?page=' + this.AllClients.current_page)
+                .then((response) => {
+                    this.AllClients = response.data
+                    this.loading = false
+                })
+                .catch((error) => {
+                    this.loading = false
+                    this.errors = error.response.data.errors
+                })
+        },
         deleteItem(item) {
             if (confirm("Are you sure you want to delete this Client?")) {
                 this.loading = true;
@@ -187,6 +203,18 @@ export default {
             this.loading = true;
             axios
                 .get("getClients")
+                .then(response => {
+                    this.AllClients = response.data;
+                    this.loading = false;
+                })
+                .catch(error => {
+                    this.loading = false;
+                    this.errors = error.response.data.errors;
+                });
+        },
+        search_client() {
+            this.loading = true;
+            axios.get(`clientSearch/${this.client.search}`)
                 .then(response => {
                     this.AllClients = response.data;
                     this.loading = false;

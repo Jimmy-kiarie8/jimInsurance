@@ -10,7 +10,7 @@ class ClientController extends Controller
 {
     public function index()
     {
-        $clients = Client::all();
+        $clients = Client::paginate(500);
         $clients->transform(function ($client) {
             $client->birthDay = date('d-M-Y', strtotime($client->birth_day));
             return $client;
@@ -73,7 +73,7 @@ class ClientController extends Controller
 
     public function getClients()
     {
-        $clients = Client::all();
+        $clients = Client::paginate(5);
         $clients->transform(function ($client) {
             $client->birthDay = date('d-M-Y', strtotime($client->birth_day));
             return $client;
@@ -90,5 +90,15 @@ class ClientController extends Controller
         } else {
             return 1;
         }
+    }
+
+    public function clientSearch($search)
+    {
+        return Client::where('name', 'LIKE', "%{$search}%")
+                        ->orWhere('phone', 'LIKE', "%{$search}%")
+                        ->orWhere('email', 'LIKE', "%{$search}%")
+                        ->orWhere('client_no', 'LIKE', "%{$search}%")
+                        ->orWhere('birth_day', 'LIKE', "%{$search}%")
+                        ->paginate(500);
     }
 }

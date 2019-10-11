@@ -116,4 +116,11 @@ class SmscontactController extends Controller
         }
         return;
     }
+
+    public function sms_contact($search)
+    {
+        return Smscontact::where('name', 'LIKE', "%{$search}%")
+            ->orWhere('phone', 'LIKE', "%{$search}%")
+            ->paginate(500);
+    }
 }

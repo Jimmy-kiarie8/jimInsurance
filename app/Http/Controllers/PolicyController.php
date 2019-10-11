@@ -89,7 +89,7 @@ class PolicyController extends Controller
 
     public function getPolicy()
     {
-        $policies = Policy::all();
+        $policies = Policy::paginate(500);
         $policies->transform(function ($policy) {
             $client = Client::find($policy->client_id);
             if ($client) {
@@ -118,5 +118,10 @@ class PolicyController extends Controller
         } else {
             return 1;
         }
+    }
+
+    public function policy_search($search)
+    {
+        return Policy::where('policy_no', 'LIKE', "%{$search}%")->paginate(500);
     }
 }

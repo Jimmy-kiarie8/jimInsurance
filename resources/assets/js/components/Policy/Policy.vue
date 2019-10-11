@@ -9,6 +9,8 @@
             <v-layout justify-center align-center>
                 <!-- <v-btn @click="openAdd" color="primary">Add A Branch</v-btn> -->
                 <div v-show="!loader">
+                    <v-text-field v-model="policy.search" append-icon="search" label="Enter policy no and press enter to search" @keyup.enter="policy_search"></v-text-field>
+                    <v-pagination v-model="AllPolicies.current_page" :length="AllPolicies.last_page" total-visible="5" @input="next_page(AllPolicies.path, AllPolicies.current_page)" circle v-if="AllPolicies.last_page > 1"></v-pagination>
                     <v-card-title>
                         <v-btn color="primary" flat @click="openAdd">Add A Policy</v-btn>
                         <v-tooltip right>
@@ -20,7 +22,7 @@
                         <v-spacer></v-spacer>
                         <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
                     </v-card-title>
-                    <v-data-table :loading="loading" :headers="headers" :items="AllPolicies" :search="search" counter class="elevation-1">
+                    <v-data-table :loading="loading" :headers="headers" :items="AllPolicies.data" :search="search" class="elevation-1">
                         <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
                         <template slot="items" slot-scope="props">
                             <!-- <td>{{ props.item.file_no }} </td>   -->
@@ -46,9 +48,6 @@
                         <v-alert slot="no-results" :value="true" color="error" icon="warning">
                             Your search for "{{ search }}" found no results.
                         </v-alert>
-                        <template slot="pageText" slot-scope="{ pageStart, pageStop }">
-                            From {{ pageStart }} to {{ pageStop }}
-                        </template>
                     </v-data-table>
                 </div>
             </v-layout>
@@ -88,6 +87,9 @@ export default {
             message: 'Success',
             color: 'black',
             dialog: false,
+            policy: {
+                search: ''
+            },
             headers: [
                 // {
                 //     text: 'File Number',
@@ -181,7 +183,18 @@ export default {
                     });
             }
         },
-
+        next_page(path, page) {
+            this.loading = true;
+            axios.get(path + '?page=' + this.AllPolicies.current_page)
+                .then((response) => {
+                    this.AllPolicies = response.data
+                    this.loading = false
+                })
+                .catch((error) => {
+                    this.loading = false
+                    this.errors = error.response.data.errors
+                })
+        },
         alert() {
             this.message = 'Success'
             this.color = 'black'
@@ -238,7 +251,20 @@ export default {
             .then((response) => {
                 this.file_no = 'PF_' + response.data
             })
-        }
+        },
+
+        policy_search() {
+            this.loading = true;
+            axios.get(`policy_search/${this.policy.search}`)
+                .then(response => {
+                    this.AllPolicies = response.data;
+                    this.loading = false;
+                })
+                .catch(error => {
+                    this.loading = false;
+                    this.errors = error.response.data.errors;
+                });
+        },
     },
     mounted() {
         this.loader = true

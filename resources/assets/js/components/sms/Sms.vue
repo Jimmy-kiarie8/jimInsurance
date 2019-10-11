@@ -4,6 +4,8 @@
         <v-container fluid fill-height v-show="!loader">
             <v-layout justify-center align-center>
                 <div class="container">
+                    <v-text-field v-model="sms.search" append-icon="search" label="Enter phone number or name and press enter to search (e.g Jane doe)" @keyup.enter="sms_contact"></v-text-field>
+                    <v-pagination v-model="allContacts.current_page" :length="allContacts.last_page" total-visible="5" @input="next_page(allContacts.path, allContacts.current_page)" circle v-if="allContacts.last_page > 1"></v-pagination>
                     <v-card-title>
                         Contacts
                         <v-btn slot="activator" color="primary" dark @click="openAdd" flat>Add Contact</v-btn>
@@ -18,7 +20,8 @@
                         <v-spacer></v-spacer>
                         <v-text-field v-model="search" append-icon="search" label="Search" single-line></v-text-field>
                     </v-card-title>
-                    <v-data-table v-model="selected" :headers="headers" :items="allContacts.data" :pagination.sync="pagination" class="elevation-1">
+                    <v-data-table v-model="selected" :headers="headers" :items="allContacts.data" :pagination.sync="pagination" class="elevation-1" :loading="loading">
+                        <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
                         <template slot="headers" slot-scope="props">
                             <tr>
                                 <th v-for="header in props.headers" :key="header.text" :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']" @click="changeSort(header.value)">
@@ -115,6 +118,10 @@ export default {
             allContacts: [],
             editedItem: {},
             contact_no: '',
+
+            sms: {
+                search: ''
+            },
             select: {
                 branch_name: "All",
                 id: "all"
@@ -195,7 +202,32 @@ export default {
                 this.pagination.sortBy = column
                 this.pagination.descending = false
             }
-        }
+        },
+
+        next_page(path, page) {
+            this.loading = true;
+            axios.get(path + '?page=' + this.allContacts.current_page)
+                .then((response) => {
+                    this.allContacts = response.data
+                    this.loading = false
+                })
+                .catch((error) => {
+                    this.loading = false
+                    this.errors = error.response.data.errors
+                })
+        },
+        sms_contact() {
+            this.loading = true;
+            axios.get(`sms_contact/${this.sms.search}`)
+                .then(response => {
+                    this.allContacts = response.data;
+                    this.loading = false;
+                })
+                .catch(error => {
+                    this.loading = false;
+                    this.errors = error.response.data.errors;
+                });
+        },
     },
     mounted() {
         this.loader = true;

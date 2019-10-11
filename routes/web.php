@@ -77,6 +77,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::post('sendSms', 'SmscontactController@sendSms')->name('sendSms');
     Route::post('importContacts', 'UploadController@importContacts')->name('importContacts');
+	Route::get('/sms_contact/{search}', 'SmscontactController@sms_contact')->name('sms_contact');
 
 	Route::get('getUsersRole', 'RoleController@getUsersRole')->name('getUsersRole');
 	Route::get('getRoles', 'RoleController@getRoles')->name('getRoles');
@@ -106,6 +107,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::get('/file_no', 'PolicyController@file_no')->name('file_no');
 	Route::get('/getPolicy', 'PolicyController@getPolicy')->name('getPolicy');
+	Route::get('/policy_search/{search}', 'PolicyController@policy_search')->name('policy_search');
 
 	Route::get('/getunsubscribed', 'EmailController@getunsubscribed')->name('getunsubscribed');
 
@@ -142,6 +144,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::get('getClients', 'ClientController@getClients')->name('getClients');
 	Route::get('client_no', 'ClientController@client_no')->name('client_no');
+	Route::get('clientSearch/{search}', 'ClientController@clientSearch')->name('clientSearch');
 
 	Route::any('user_count', 'DashboardController@user_count')->name('user_count');
 	Route::any('client_count', 'DashboardController@client_count')->name('client_count');
