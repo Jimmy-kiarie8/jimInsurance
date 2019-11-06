@@ -23,7 +23,15 @@ class UploadController extends Controller
             $contact_d->email = (array_key_exists('email', $contact)) ? $contact['email'] : null;
             $contact_d->phone = $contact['phone'];
             $contact_d->user_id = $user_id;
-            $group_id = Group::select('id')->where('group_name', 'LIKE', "%{$contact['group']}%")->first();
+            // $group_id = Group::select('id')->where('group_name', 'LIKE', "%{$contact['group']}%")->first();
+            $sender_n = strtolower($contact['group']);
+            $group_id = Group::select('id')->whereRaw('LOWER(group_name) = ?', $sender_n)->first();
+            if (!$group_id) {
+                $group_id = new Group();
+                $group_id->group_name = $contact['group'];
+                $group_id->user_id = Auth::id();
+                $group_id->save();
+            }
             $contact_d->group_id = ($group_id) ? $group_id->id : null;
             $contact_d->save();
         }
